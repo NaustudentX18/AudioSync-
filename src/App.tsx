@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BookItem, UserSettings } from "./types";
+import { BookItem, UserSettings, SortOption } from "./types";
 import { DEFAULT_BOOKS } from "./data";
 import BookDetailView from "./components/BookDetailView";
 import ImportContentForm from "./components/ImportContentForm";
@@ -72,7 +72,7 @@ export default function App() {
   const [activeBook, setActiveBook] = useState<BookItem | null>(null);
 
   // Library sorting state ('recent' | 'alphabetical' | 'progress')
-  const [sortBy, setSortBy] = useState<"recent" | "alphabetical" | "progress">("recent");
+  const [sortBy, setSortBy] = useState<SortOption>("recent");
 
   // Online / Offline State detection
   const [isOnline, setIsOnline] = useState<boolean>(() => {
@@ -865,7 +865,7 @@ export default function App() {
                     <select
                       id="library-shelf-sorting"
                       value={sortBy}
-                      onChange={(e) => setSortBy(e.target.value as any)}
+                      onChange={(e) => setSortBy(e.target.value as SortOption)}
                       className="bg-zinc-950 border border-zinc-800/80 px-4 py-2 pr-9 rounded-full text-[11px] font-mono font-bold tracking-wider text-zinc-400 hover:text-zinc-200 transition-all focus:outline-none appearance-none cursor-pointer uppercase shadow-inner animate-fade-in"
                     >
                       <option value="recent">Sort: Recently Added</option>
