@@ -30,3 +30,18 @@ export interface UserSettings {
   selectedVoiceId: string;
   playbackSpeed: number;
 }
+
+export type ExportedBookFull = Omit<BookItem, 'content' | 'isDefault'> & {
+  schema: string;
+  paragraphs: string[];
+  fullContent: string;
+};
+
+export interface ExportedBookParagraph {
+  bookId: string;
+  bookTitle: string;
+  paragraphIndex: number;
+  paragraphContent: string;
+}
+
+export type ExportedData = ExportedBookFull | ExportedBookParagraph;

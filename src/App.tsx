@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BookItem, UserSettings } from "./types";
+import { BookItem, UserSettings, ExportedData } from "./types";
 import { DEFAULT_BOOKS } from "./data";
 import BookDetailView from "./components/BookDetailView";
 import ImportContentForm from "./components/ImportContentForm";
@@ -1119,7 +1119,7 @@ ${paragraphs.join("\n\n")}`;
                 <button
                   onClick={() => {
                     const paragraphs = exportingBook.content.split(/\n+/).map(p => p.trim()).filter(Boolean);
-                    let dataToExport: any = {};
+                    let dataToExport: ExportedData;
                     let fileSuffix = "all";
 
                     if (exportParagraphIndex === -1) {
