@@ -137,6 +137,11 @@ export default function App() {
   const [exportingBook, setExportingBook] = useState<BookItem | null>(null);
   const [exportParagraphIndex, setExportParagraphIndex] = useState<number>(-1);
 
+  const exportParagraphs = React.useMemo(() => {
+    if (!exportingBook) return [];
+    return exportingBook.content.split(/\n+/).map(p => p.trim()).filter(Boolean);
+  }, [exportingBook?.content]);
+
   // Helper: Trigger file download in client browser
   const downloadFile = (content: string, filename: string, contentType: string) => {
     const blob = new Blob([content], { type: contentType });
@@ -1071,8 +1076,8 @@ export default function App() {
                     onChange={(e) => setExportParagraphIndex(Number(e.target.value))}
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-zinc-300 focus:outline-none focus:ring-1 focus:ring-indigo-500/50 appearance-none cursor-pointer"
                   >
-                    <option value="-1">Entire Book / Full Text ({exportingBook.content.split(/\n+/).filter(Boolean).length} paragraphs)</option>
-                    {exportingBook.content.split(/\n+/).filter(p => p.trim()).map((para, idx) => (
+                    <option value="-1">Entire Book / Full Text ({exportParagraphs.length} paragraphs)</option>
+                    {exportParagraphs.map((para, idx) => (
                       <option key={idx} value={idx}>
                         Paragraph/Chapter {idx + 1}: &ldquo;{para.slice(0, 45)}...&rdquo;
                       </option>
@@ -1088,7 +1093,6 @@ export default function App() {
               <div className="grid grid-cols-2 gap-3">
                 <button
                   onClick={() => {
-                    const paragraphs = exportingBook.content.split(/\n+/).map(p => p.trim()).filter(Boolean);
                     let contentToExport = "";
                     let fileSuffix = "all";
 
@@ -1100,9 +1104,9 @@ Date Added: ${exportingBook.dateAdded || "N/A"}
 
 ========================================
 
-${paragraphs.join("\n\n")}`;
+${exportParagraphs.join("\n\n")}`;
                     } else {
-                      contentToExport = paragraphs[exportParagraphIndex] || "";
+                      contentToExport = exportParagraphs[exportParagraphIndex] || "";
                       fileSuffix = `paragraph-${exportParagraphIndex + 1}`;
                     }
 
@@ -1118,7 +1122,6 @@ ${paragraphs.join("\n\n")}`;
 
                 <button
                   onClick={() => {
-                    const paragraphs = exportingBook.content.split(/\n+/).map(p => p.trim()).filter(Boolean);
                     let dataToExport: any = {};
                     let fileSuffix = "all";
 
@@ -1133,7 +1136,7 @@ ${paragraphs.join("\n\n")}`;
                         dateAdded: exportingBook.dateAdded,
                         durationSeconds: exportingBook.durationSeconds,
                         progressSeconds: exportingBook.progressSeconds,
-                        paragraphs: paragraphs,
+                        paragraphs: exportParagraphs,
                         fullContent: exportingBook.content
                       };
                     } else {
@@ -1141,7 +1144,7 @@ ${paragraphs.join("\n\n")}`;
                         bookId: exportingBook.id,
                         bookTitle: exportingBook.title,
                         paragraphIndex: exportParagraphIndex,
-                        paragraphContent: paragraphs[exportParagraphIndex] || ""
+                        paragraphContent: exportParagraphs[exportParagraphIndex] || ""
                       };
                       fileSuffix = `paragraph-${exportParagraphIndex + 1}`;
                     }
