@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { BookItem, UserSettings } from "./types";
 import { DEFAULT_BOOKS } from "./data";
 import BookDetailView from "./components/BookDetailView";
 import ImportContentForm from "./components/ImportContentForm";
 import VoiceConfiguration from "./components/VoiceConfiguration";
-import { 
-  Home, Compass, BookMarked, Settings, Sparkles, UploadCloud, 
-  Search, BookOpen, Clock, HelpCircle, FileText, Link2, Camera, 
-  Trash2, Play, ChevronRight, User, CircleHelp, Download, Flame, Moon, Timer 
+import {
+  Home, Compass, BookMarked, Settings, Sparkles, UploadCloud,
+  Search, BookOpen, Clock, HelpCircle, FileText, Link2, Camera,
+  Trash2, Play, ChevronRight, User, CircleHelp, Download, Flame, Moon, Timer
 } from "lucide-react";
 
 interface DailyReadingStats {
@@ -33,7 +33,7 @@ const getLocalDateString = () => {
 export default function App() {
   // Navigation active state
   const [activeTab, setActiveTab] = useState<"home" | "explore" | "import" | "library" | "voices">("home");
-  
+
   // Library book items state (persisted)
   const [books, setBooks] = useState<BookItem[]>(() => {
     if (typeof window !== "undefined") {
@@ -137,12 +137,6 @@ export default function App() {
   const [exportingBook, setExportingBook] = useState<BookItem | null>(null);
   const [exportParagraphIndex, setExportParagraphIndex] = useState<number>(-1);
 
-  // Memoize the paragraphs of the book being exported to avoid redundant splitting
-  const exportingBookParagraphs = useMemo(() => {
-    if (!exportingBook?.content) return [];
-    return exportingBook.content.split(/\n+/).map(p => p.trim()).filter(Boolean);
-  }, [exportingBook?.content]);
-
   // Helper: Trigger file download in client browser
   const downloadFile = (content: string, filename: string, contentType: string) => {
     const blob = new Blob([content], { type: contentType });
@@ -175,7 +169,7 @@ export default function App() {
       const today = getLocalDateString();
       const currentStats = prev.dailyStats[today] || { words: 0, minutes: 0 };
       const minutesRead = seconds / 60;
-      
+
       const updatedStats = {
         words: currentStats.words + words,
         minutes: currentStats.minutes + minutesRead
@@ -376,8 +370,8 @@ export default function App() {
           <button
             onClick={() => setIsOfflineSimulated(prev => !prev)}
             className={`px-2.5 py-1 rounded-full text-[10px] font-mono font-bold transition-all border cursor-pointer ${
-              isOfflineSimulated 
-                ? "bg-rose-950 text-rose-300 border-rose-800" 
+              isOfflineSimulated
+                ? "bg-rose-950 text-rose-300 border-rose-800"
                 : "bg-zinc-950 text-zinc-500 border-zinc-850 hover:bg-zinc-900 hover:text-zinc-200"
             }`}
             title="Simulate / Trigger offline sandbox mode"
@@ -432,8 +426,8 @@ export default function App() {
                       <div className="flex items-center gap-2.5">
                         <h4 className="font-display font-bold text-zinc-100 text-sm uppercase tracking-wide">Daily Reading Journey</h4>
                         <span className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider ${
-                          goalState.streak > 0 
-                            ? "bg-amber-400/20 text-amber-300 border border-amber-400/30 animate-pulse" 
+                          goalState.streak > 0
+                            ? "bg-amber-400/20 text-amber-300 border border-amber-400/30 animate-pulse"
                             : "bg-zinc-800 text-zinc-500 border border-zinc-750"
                         }`}>
                           🔥 {goalState.streak} Day habit streak
@@ -461,7 +455,7 @@ export default function App() {
                         {mins}m
                       </button>
                     ))}
-                    
+
                     <button
                       onClick={handleSimulateOneMinRead}
                       className="ml-2 px-3 py-1.5 bg-zinc-900 border border-zinc-800 hover:border-indigo-500/50 hover:bg-zinc-850 text-[10.5px] text-indigo-400 hover:text-white rounded-xl font-bold cursor-pointer transition-all shrink-0 uppercase tracking-tight"
@@ -490,13 +484,13 @@ export default function App() {
                     <div className="relative w-14 h-14 flex items-center justify-center">
                       <svg className="w-14 h-14 transform -rotate-90">
                         <circle cx="28" cy="28" r="23" className="stroke-zinc-850" strokeWidth="4" fill="transparent" />
-                        <circle 
-                          cx="28" 
-                          cy="28" 
-                          r="23" 
-                          className="stroke-indigo-500 transition-all duration-500" 
-                          strokeWidth="4" 
-                          fill="transparent" 
+                        <circle
+                          cx="28"
+                          cy="28"
+                          r="23"
+                          className="stroke-indigo-500 transition-all duration-500"
+                          strokeWidth="4"
+                          fill="transparent"
                           strokeDasharray={2 * Math.PI * 23}
                           strokeDashoffset={2 * Math.PI * 23 * (1 - Math.min(todayMinutes / goalState.dailyGoalMinutes, 1))}
                           strokeLinecap="round"
@@ -514,20 +508,20 @@ export default function App() {
                       <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest block font-bold">7-Day Completion Tracker</span>
                       <span className="text-[10px] font-medium text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-950/20 uppercase tracking-tight">Habit logs</span>
                     </div>
-                    
+
                     <div className="grid grid-cols-7 gap-2">
                       {weekDays.map((day) => {
                         const isToday = day.dateStr === todayStr;
                         const stats = goalState.dailyStats[day.dateStr] || { words: 0, minutes: 0 };
                         const isCompleted = stats.minutes >= goalState.dailyGoalMinutes;
-                        
+
                         return (
                           <div key={day.dateStr} className={`flex flex-col items-center gap-1.5 p-1.5 rounded-xl ${isToday ? "bg-zinc-900 border border-zinc-800" : ""}`}>
                             <span className={`text-[10px] font-bold font-mono ${isToday ? "text-indigo-400" : "text-zinc-500"}`}>
                               {day.label}
                             </span>
-                            
-                            <div 
+
+                            <div
                               className={`w-7.5 h-7.5 rounded-lg flex items-center justify-center text-[11px] font-mono font-bold transition-all border ${
                                 isCompleted
                                   ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/35 shadow-[0_0_8px_rgba(16,185,129,0.15)]"
@@ -553,8 +547,8 @@ export default function App() {
                   <button
                     onClick={() => setHomeSubTab("for-you")}
                     className={`px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
-                      homeSubTab === "for-you" 
-                        ? "bg-zinc-900 text-[#fefaed] shadow-sm" 
+                      homeSubTab === "for-you"
+                        ? "bg-zinc-900 text-[#fefaed] shadow-sm"
                         : "text-zinc-500 hover:text-zinc-300"
                     }`}
                   >
@@ -563,8 +557,8 @@ export default function App() {
                   <button
                     onClick={() => setHomeSubTab("featured")}
                     className={`px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
-                      homeSubTab === "featured" 
-                        ? "bg-zinc-900 text-[#fefaed]" 
+                      homeSubTab === "featured"
+                        ? "bg-zinc-900 text-[#fefaed]"
                         : "text-zinc-500 hover:text-zinc-300"
                     }`}
                   >
@@ -591,7 +585,7 @@ export default function App() {
                   <h3 className="font-display font-semibold text-lg text-zinc-300 tracking-tight">
                     Continue listening
                   </h3>
-                  
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {continueListeningItems.map((bookItem) => {
                       const pct = Math.round((bookItem.progressSeconds / bookItem.durationSeconds) * 100);
@@ -655,7 +649,7 @@ export default function App() {
                   <h3 className="font-display font-semibold text-lg text-zinc-300 tracking-tight">
                     Upload & listen
                   </h3>
-                  
+
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {[
                       {
@@ -729,7 +723,7 @@ export default function App() {
                         {/* Cover Block with Gradient */}
                         <div className={`aspect-[4/3] rounded-2xl bg-gradient-to-br ${b.coverGradient} p-5 flex flex-col justify-between relative overflow-hidden shadow`}>
                           <div className="absolute inset-0 bg-black/10 mix-blend-overlay" />
-                          
+
                           <div className="flex justify-between items-start z-10 text-[9px] font-mono tracking-wider font-bold">
                             <span className="bg-black/20 backdrop-blur-md text-white/80 px-2 py-0.5 rounded-full border border-white/5">
                               {b.author?.split(" ").pop()}
@@ -789,8 +783,8 @@ export default function App() {
                 </div>
               </div>
             </div>
-          ) : 
-          
+          ) :
+
           /* SECTION TAB: EXPLORE / TRENDING SCRIPT DRAFTS */
           activeTab === "explore" ? (
             <div className="space-y-6 animate-fade-in">
@@ -841,8 +835,8 @@ export default function App() {
                 </p>
               </div>
             </div>
-          ) : 
-          
+          ) :
+
           /* SECTION TAB: UPLOAD / INGEST WRITING & AUDIO FILE SOURCE */
           activeTab === "import" ? (
             <div className="space-y-6 animate-fade-in">
@@ -854,8 +848,8 @@ export default function App() {
               </div>
               <ImportContentForm onAddBook={handleAddNewBook} />
             </div>
-          ) : 
-          
+          ) :
+
           /* SECTION TAB: LIBRARY BOOKSHELF DISPLAY PANEL */
           activeTab === "library" ? (
             <div className="space-y-6 animate-fade-in">
@@ -965,8 +959,8 @@ export default function App() {
                 </div>
               )}
             </div>
-          ) : 
-          
+          ) :
+
           /* SECTION TAB: VOICES & SPEECH API PREFERENCES */
           activeTab === "voices" ? (
             <div className="space-y-6">
@@ -1077,8 +1071,8 @@ export default function App() {
                     onChange={(e) => setExportParagraphIndex(Number(e.target.value))}
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-zinc-300 focus:outline-none focus:ring-1 focus:ring-indigo-500/50 appearance-none cursor-pointer"
                   >
-                    <option value="-1">Entire Book / Full Text ({exportingBookParagraphs.length} paragraphs)</option>
-                    {exportingBookParagraphs.map((para, idx) => (
+                    <option value="-1">Entire Book / Full Text ({exportingBook.content.split(/\n+/).filter(Boolean).length} paragraphs)</option>
+                    {exportingBook.content.split(/\n+/).filter(p => p.trim()).map((para, idx) => (
                       <option key={idx} value={idx}>
                         Paragraph/Chapter {idx + 1}: &ldquo;{para.slice(0, 45)}...&rdquo;
                       </option>
@@ -1094,6 +1088,7 @@ export default function App() {
               <div className="grid grid-cols-2 gap-3">
                 <button
                   onClick={() => {
+                    const paragraphs = exportingBook.content.split(/\n+/).map(p => p.trim()).filter(Boolean);
                     let contentToExport = "";
                     let fileSuffix = "all";
 
@@ -1105,9 +1100,9 @@ Date Added: ${exportingBook.dateAdded || "N/A"}
 
 ========================================
 
-${exportingBookParagraphs.join("\n\n")}`;
+${paragraphs.join("\n\n")}`;
                     } else {
-                      contentToExport = exportingBookParagraphs[exportParagraphIndex] || "";
+                      contentToExport = paragraphs[exportParagraphIndex] || "";
                       fileSuffix = `paragraph-${exportParagraphIndex + 1}`;
                     }
 
@@ -1123,6 +1118,7 @@ ${exportingBookParagraphs.join("\n\n")}`;
 
                 <button
                   onClick={() => {
+                    const paragraphs = exportingBook.content.split(/\n+/).map(p => p.trim()).filter(Boolean);
                     let dataToExport: any = {};
                     let fileSuffix = "all";
 
@@ -1137,7 +1133,7 @@ ${exportingBookParagraphs.join("\n\n")}`;
                         dateAdded: exportingBook.dateAdded,
                         durationSeconds: exportingBook.durationSeconds,
                         progressSeconds: exportingBook.progressSeconds,
-                        paragraphs: exportingBookParagraphs,
+                        paragraphs: paragraphs,
                         fullContent: exportingBook.content
                       };
                     } else {
@@ -1145,7 +1141,7 @@ ${exportingBookParagraphs.join("\n\n")}`;
                         bookId: exportingBook.id,
                         bookTitle: exportingBook.title,
                         paragraphIndex: exportParagraphIndex,
-                        paragraphContent: exportingBookParagraphs[exportParagraphIndex] || ""
+                        paragraphContent: paragraphs[exportParagraphIndex] || ""
                       };
                       fileSuffix = `paragraph-${exportParagraphIndex + 1}`;
                     }
