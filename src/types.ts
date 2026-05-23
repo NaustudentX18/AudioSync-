@@ -1,4 +1,4 @@
-export type VoiceEngine = "elevenlabs" | "openai" | "webspeech";
+export type VoiceEngine = "elevenlabs" | "openai" | "webspeech" | "kokoro";
 
 export interface BookItem {
   id: string;
