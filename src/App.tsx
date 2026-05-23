@@ -326,8 +326,9 @@ export default function App() {
     const list = [];
     const labels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     // Start from 6 days ago up to today
+    const now = new Date();
     for (let i = 6; i >= 0; i--) {
-      const current = new Date();
+      const current = new Date(now);
       current.setDate(current.getDate() - i);
       const yyyy = current.getFullYear();
       const mm = String(current.getMonth() + 1).padStart(2, '0');
