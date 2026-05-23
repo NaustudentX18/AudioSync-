@@ -1,0 +1,6 @@
+{
+  "name": "AuraReader",
+  "description": "Premium open-source BYO-Key audiobook and speech reader. Capture images of pages, paste links, and listen using ElevenLabs, OpenAI, or free Web Speech APIs.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
