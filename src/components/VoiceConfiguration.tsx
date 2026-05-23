@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { UserSettings, VoiceModel } from "../types";
 import { VOICE_DEFAULTS } from "../data";
-import { synthesizeElevenLabs, synthesizeOpenAI } from "../utils/speech";
+import { synthesizeElevenLabs, synthesizeOpenAI, synthesizeKokoro } from "../utils/speech";
 import { Key, Volume2, ShieldAlert, Sparkles, Check, Play, Loader2, Music, CheckCircle } from "lucide-react";
 
 interface VoiceConfigurationProps {
@@ -62,6 +62,12 @@ export default function VoiceConfiguration({ settings, onUpdateSettings }: Voice
           setTestPlayError("Browser speaking interrupted or failed.");
         };
         window.speechSynthesis.speak(utterance);
+      } else if (voice.engine === "kokoro") {
+        const audioUrl = await synthesizeKokoro(testPhrase, voice.voiceIdValue);
+        const audio = new Audio(audioUrl);
+        setTestingAudio(audio);
+        audio.play();
+        audio.onended = () => setTestingModelId(null);
       } else if (voice.engine === "openai") {
         if (!settings.openaiKey) {
           throw new Error("Please enter your OpenAI API key in the 'Keys' tab first.");
@@ -200,8 +206,8 @@ export default function VoiceConfiguration({ settings, onUpdateSettings }: Voice
               <span className="text-xs text-zinc-500">Determine which speech engine executes when generating book pages by default.</span>
             </div>
             <div className="flex gap-2">
-              {(["webspeech", "openai", "elevenlabs"] as const).map(eng => {
-                const label = eng === "webspeech" ? "Web Speech (Free)" : eng === "openai" ? "OpenAI TTS" : "ElevenLabs";
+              {(["webspeech", "kokoro", "openai", "elevenlabs"] as const).map(eng => {
+                const label = eng === "webspeech" ? "Web Speech (Free)" : eng === "kokoro" ? "Kokoro (Offline)" : eng === "openai" ? "OpenAI TTS" : "ElevenLabs";
                 const isSelected = settings.preferredEngine === eng;
                 return (
                   <button
@@ -210,6 +216,7 @@ export default function VoiceConfiguration({ settings, onUpdateSettings }: Voice
                       // Automatically match default voice when switching engines
                       let defaultVoiceId = settings.selectedVoiceId;
                       if (eng === "webspeech") defaultVoiceId = "ws-en-us-neural";
+                      if (eng === "kokoro") defaultVoiceId = "ko-af-heart";
                       if (eng === "openai") defaultVoiceId = "oa-nova";
                       if (eng === "elevenlabs") defaultVoiceId = "el-rachel";
 
@@ -240,7 +247,7 @@ export default function VoiceConfiguration({ settings, onUpdateSettings }: Voice
           <div className="flex flex-wrap items-center justify-between gap-3">
             <span className="text-xs text-zinc-400 font-medium">Curated high-fidelity vocal actors:</span>
             <div className="flex items-center gap-1.5 bg-zinc-950 p-1 rounded-full border border-zinc-800">
-              {["all", "webspeech", "openai", "elevenlabs"].map((engineOption) => (
+              {["all", "webspeech", "kokoro", "openai", "elevenlabs"].map((engineOption) => (
                 <button
                   key={engineOption}
                   onClick={() => setFilterEngine(engineOption)}
@@ -250,7 +257,7 @@ export default function VoiceConfiguration({ settings, onUpdateSettings }: Voice
                       : "text-zinc-500 hover:text-zinc-300"
                   }`}
                 >
-                  {engineOption === "all" ? "All Drivers" : engineOption === "webspeech" ? "Native Speech" : engineOption}
+                  {engineOption === "all" ? "All Drivers" : engineOption === "webspeech" ? "Native Speech" : engineOption === "kokoro" ? "Kokoro" : engineOption}
                 </button>
               ))}
             </div>
@@ -263,7 +270,7 @@ export default function VoiceConfiguration({ settings, onUpdateSettings }: Voice
               const isPlayingPreview = testingModelId === voice.id;
               
               // Key missing check flags
-              const isKeyNeeded = voice.engine !== "webspeech";
+              const isKeyNeeded = voice.engine !== "webspeech" && voice.engine !== "kokoro";
               const isKeyMissing = isKeyNeeded && (
                 (voice.engine === "openai" && !settings.openaiKey) ||
                 (voice.engine === "elevenlabs" && !settings.elevenlabsKey)
@@ -289,7 +296,7 @@ export default function VoiceConfiguration({ settings, onUpdateSettings }: Voice
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <span className={`w-1.5 h-1.5 rounded-full ${
-                          voice.engine === "elevenlabs" ? "bg-indigo-500" : voice.engine === "openai" ? "bg-teal-500" : "bg-emerald-500"
+                          voice.engine === "elevenlabs" ? "bg-indigo-500" : voice.engine === "openai" ? "bg-teal-500" : voice.engine === "kokoro" ? "bg-blue-500" : "bg-emerald-500"
                         }`} />
                         <span className="font-semibold text-sm text-zinc-100 group-hover:text-indigo-300 transition-colors">
                           {voice.name}
@@ -302,6 +309,8 @@ export default function VoiceConfiguration({ settings, onUpdateSettings }: Voice
                           ? "bg-indigo-950 text-indigo-300" 
                           : voice.engine === "openai" 
                           ? "bg-teal-950 text-teal-300" 
+                          : voice.engine === "kokoro"
+                          ? "bg-blue-950 text-blue-300"
                           : "bg-emerald-950/80 text-emerald-300"
                       }`}>
                         {voice.engine === "webspeech" ? "Free" : voice.engine}

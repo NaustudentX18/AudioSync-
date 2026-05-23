@@ -80,6 +80,32 @@ export const VOICE_DEFAULTS: VoiceModel[] = [
     voiceIdValue: "default"
   },
   
+  // Kokoro offline voices
+  {
+    id: "ko-af-heart",
+    name: "Heart (Kokoro)",
+    engine: "kokoro",
+    gender: "female",
+    description: "High quality American female voice.",
+    voiceIdValue: "af_heart"
+  },
+  {
+    id: "ko-am-fenrir",
+    name: "Fenrir (Kokoro)",
+    engine: "kokoro",
+    gender: "male",
+    description: "High quality American male voice.",
+    voiceIdValue: "am_fenrir"
+  },
+  {
+    id: "ko-bf-emma",
+    name: "Emma (Kokoro)",
+    engine: "kokoro",
+    gender: "female",
+    description: "High quality British female voice.",
+    voiceIdValue: "bf_emma"
+  },
+
   // ElevenLabs premium voices
   {
     id: "el-rachel",

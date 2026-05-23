@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { BookItem, UserSettings } from "../types";
 import { VOICE_DEFAULTS } from "../data";
-import { speakWebSpeech, synthesizeElevenLabs, synthesizeOpenAI } from "../utils/speech";
+import { speakWebSpeech, synthesizeElevenLabs, synthesizeOpenAI, synthesizeKokoro } from "../utils/speech";
 import AudioVisualizer from "./AudioVisualizer";
 import { 
   Play, Pause, ChevronLeft, Volume2, SkipForward, SkipBack, 
@@ -165,7 +165,9 @@ export default function BookDetailView({
         let audioUrl = cachedAudioUrls[index];
 
         if (!audioUrl) {
-          if (activeVoice.engine === "openai") {
+          if (activeVoice.engine === "kokoro") {
+            audioUrl = await synthesizeKokoro(targetText, activeVoice.voiceIdValue);
+          } else if (activeVoice.engine === "openai") {
             if (!settings.openaiKey) {
               throw new Error("OpenAI key missing. Open settings (Voices tab) and provide standard key.");
             }
@@ -549,7 +551,7 @@ export default function BookDetailView({
           {activeVoice.engine !== "webspeech" && cachedAudioUrls[activeParagraphIndex] && (
             <a
               href={cachedAudioUrls[activeParagraphIndex]}
-              download={`${book.id}-para-${activeParagraphIndex}.mp3`}
+              download={`${book.id}-para-${activeParagraphIndex}.${activeVoice.engine === "kokoro" ? "wav" : "mp3"}`}
               className="flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-semibold tracking-wide uppercase bg-zinc-900 border border-zinc-800 text-indigo-400 rounded-lg shrink-0 transition-colors hover:bg-zinc-800 hover:text-white"
               title="Download generated voice track"
             >
