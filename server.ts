@@ -14,7 +14,7 @@ async function startServer() {
   // Allow large payloads for image uploads (page OCR)
   app.use(express.json({ limit: "25mb" }));
 
-  const PORT = 3000;
+  const PORT = 3002;
 
   // Lazy initialize GoogleGenAI if the key is available
   const getGeminiAI = () => {

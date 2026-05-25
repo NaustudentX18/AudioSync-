@@ -417,7 +417,7 @@ export function Player() {
     try {
       // Resolve voice: strip provider prefix if present, else use as-is
       const voiceId = voice.includes('-') ? voice.split('-').slice(1).join('-') : voice;
-      const audioBytes = await generateSpeech(ttsProvider, text, voiceId);
+      const audioBytes = await generateSpeech(ttsProvider, text, voiceId, ttsProvider === 'stepfun' ? { apiKey: stepfunApiKey } : {});
       await decodeWaveform(audioBytes);
 
       audioRef.current?.pause();

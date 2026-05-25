@@ -4,7 +4,6 @@
  */
 
 import { KokoroTTS } from 'kokoro-js';
-import { useSettingsStore } from '../stores/settingsStore';
 import { StepFunTTS, BUILTIN_VOICES } from './tts-stepfun';
 import { synthesizeOpenAI } from '../utils/speech';
 import { VoiceEngine } from '../types';
@@ -76,18 +75,16 @@ const providers: Record<string, TTSProvider> = {
   },
   stepfun: {
     generateSpeech: async (text, voiceId, opts = {}) => {
-      const settings = useSettingsStore.getState();
-      const apiKey = (opts as any)?.apiKey || settings.stepfunApiKey;
-      const model = (opts as any)?.model || settings.stepfunModel || 'step-tts-2';
+      const apiKey = (opts as any)?.apiKey;
       if (!apiKey) throw new Error('StepFun API key not configured. Add it in Settings.');
+      const model = (opts as any)?.model || 'step-tts-2';
       const client = getStepFunClient(apiKey, model);
       return client.generateSpeech(text, voiceId, opts as any);
     },
     listVoices: async (opts = {}) => {
-      const settings = useSettingsStore.getState();
-      const apiKey = (opts as any)?.apiKey || settings.stepfunApiKey;
+      const apiKey = (opts as any)?.apiKey;
       if (!apiKey) return BUILTIN_VOICES.map((v) => v.id);
-      const client = getStepFunClient(apiKey, settings.stepfunModel || 'step-tts-2');
+      const client = getStepFunClient(apiKey, (opts as any)?.model || 'step-tts-2');
       const voices = await client.listVoices();
       return voices.map((v) => v.id);
     },
@@ -111,17 +108,6 @@ export async function listProviderVoices(provider: string): Promise<string[]> {
   const p = providers[provider];
   if (!p) return [];
   return p.listVoices();
-}
-
-/** Read active provider from settings and synthesize */
-export async function generateSpeechFromSettings(
-  text: string,
-  voiceId: string,
-  opts: { speed?: number } = {},
-): Promise<Uint8Array> {
-  const settings = useSettingsStore.getState();
-  const provider = settings.ttsProvider || 'kokoro';
-  return generateSpeech(provider, text, voiceId, opts);
 }
 
 export { VOICES, BUILTIN_VOICES };
