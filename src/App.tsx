@@ -3,6 +3,7 @@ import { useDropzone } from 'react-dropzone';
 import { library, Book, SmartCollection } from './lib/library';
 import { getEncryptedItem, setEncryptedItem } from './lib/secureStorage';
 import { detectPlatformShellCapabilities, mergeLww, scheduleRetry, type PlatformShellCapabilities, type RetryJob, type SyncEnvelope } from './lib/parity';
+import SyncPanel from './components/SyncPanel';
 
 const Player = lazy(() => import('./components/Player').then((m) => ({ default: m.Player })));
 
