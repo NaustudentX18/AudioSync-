@@ -160,7 +160,7 @@
 - [x] Test suite (`npm run test`) — implemented and passing
 - [x] E2E tests (Playwright) — implemented and passing
 - [x] CI/CD pipeline (.github/workflows/ci.yml) — implemented
-- [ ] Release v1.0.0 — tag + GitHub release
+- [x] Release v1.0.0 — tag + GitHub release (v1.0.0 pushed with dist/ to main)
 
 ---
 
