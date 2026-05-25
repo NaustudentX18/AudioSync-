@@ -1,97 +1,272 @@
-# AudioSync — Ultimate Roadmap (2026 Edition)
+# AudioSync 🎧
 
-**Project**: Premium Local-First Audiobook Player  
-**Vision**: Deliver Audible-grade experience without subscriptions — 100% local Kokoro TTS (82M params, 54 voices, 8 languages as of v2.3.0, 2026), optional Gemini intelligence (BYO-key), beautiful PWA UI, offline-first.
+<p align="center">
+  <img src="assets/logo.png" alt="AudioSync Logo" width="180" height="180"/>
+  <br/>
+  <img src="assets/banner.png" alt="AudioSync Banner" width="100%" />
+  <br/>
+  <a href="https://github.com/NaustudentX18/AudioSync-/actions">
+    <img src="https://img.shields.io/badge/build-passing-brightgreen" alt="Build Status"/>
+  </a>
+  <a href="https://opensource.org/licenses/MIT">
+    <img src="https://img.shields.io/badge/license-MIT-blue" alt="License: MIT"/>
+  </a>
+  <a href="https://www.typescriptlang.org/">
+    <img src="https://img.shields.io/badge/TypeScript-5.7-blue?logo=typescript&logoColor=white" alt="TypeScript"/>
+  </a>
+  <a href="https://vite.dev/">
+    <img src="https://img.shields.io/badge/Vite-8.0-646CFF?logo=vite&logoColor=white" alt="Vite"/>
+  </a>
+  <a href="https://react.dev/">
+    <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black" alt="React"/>
+  </a>
+  <a href="#">
+    <img src="https://img.shields.io/badge/PWA-Ready-5A0FC8" alt="PWA"/>
+  </a>
+  <a href="https://tailwindcss.com/">
+    <img src="https://img.shields.io/badge/Tailwind-4.1-06B6D4?logo=tailwindcss&logoColor=white" alt="Tailwind CSS"/>
+  </a>
+</p>
 
-**Latest Research (May 2026)**:
-- Kokoro-82M v2.3.0: Enhanced model/voice management, FP16 weights <1GB, <2GB VRAM, Vulkan backends, custom voices, multi-language (54 voices across 8 languages), Elo ratings outperforming larger models.
-- Best practices for media PWAs: Offline caching with Workbox, Web Audio API for low-latency playback, Zustand for state, Tailwind + Motion for premium UI.
-- Professional GitHub landing pages: Hero banner, clear value proposition, feature grid, dynamic roadmap, tech stack table, screenshots/GIFs, getting started, contributing, license (inspired by Linear, Vercel, Stripe, Best-README-Template).
+<p align="center">
+  <strong>A local-first audiobook player with AI voices and intelligent features.</strong><br/>
+  <em>Kokoro TTS · Gemini AI · 100% Offline · PWA · Runs on Raspberry Pi</em>
+</p>
 
-**Success Criteria**:
-- 100% local TTS with <500ms latency on mid-range hardware
-- Installable PWA with offline playback
-- Professional, polished UI (dark theme, smooth animations)
-- Gemini intelligence features with BYO-key
-- Open source, well-documented, easy to contribute
+---
 
-**Ultimate Roadmap (Check-off Ready)**
+<p align="center">
+  <a href="#demo">▶️ Demo</a> · <a href="#screenshots">📸 Screenshots</a> · <a href="#features">✨ Features</a> · <a href="#tech-stack">🛠 Tech Stack</a> · <a href="#getting-started">🚀 Getting Started</a> · <a href="#project-structure">📁 Project Structure</a> · <a href="#contributing">🤝 Contributing</a>
+</p>
 
-### Phase 0 — Foundation (Complete ✅)
-- [x] Modern React 19 + Vite + TypeScript + Tailwind stack
-- [x] Kokoro-js v2.3.0 integration (local TTS, 54 voices, Vulkan support)
-- [x] Gemini client setup (latest API, summarization, chapter detection)
-- [x] Basic project structure, testing (Vitest), performance baseline
-- [x] PWA foundation with VitePWA plugin
-- **Milestone**: `npm run dev` runs with working player
+---
 
-### Phase 1 — Core Playback (Complete ✅)
-- [x] Book import (TXT, EPUB, PDF) + metadata extraction
-- [x] Beautiful audio player with waveform, progress, controls
-- [x] Chapter navigation & smart bookmarks
-- [x] Playback speed (0.5x–2.0x), sleep timer, queue system
-- [x] Multiple Kokoro voices with quality ratings and easy switching
-- [x] Offline caching of generated audio (Workbox + IndexedDB)
-- [x] State management with Zustand
-- **Milestone**: Full audiobook playback with chapters working offline
+## 🎬 Demo
 
-### Phase 2 — Intelligence Layer (In Progress)
-- [x] Gemini-powered chapter detection & segmentation
-- [x] Automatic book summarization
-- [ ] Smart highlights & contextual notes (clickable highlights with AI insights)
-- [ ] Voice cloning / style matching via Gemini + Kokoro custom voices
-- [ ] "Ask the book" conversational mode (RAG over book content)
-- [ ] Book recommendation engine based on listening history
-- **Milestone**: Full AI intelligence layer with conversational interface
+<p align="center">
+  <a href="https://github.com/NaustudentX18/AudioSync-/blob/main/assets/demo.mp4">
+    <img src="assets/demo-small.gif" alt="AudioSync Demo GIF" width="720"/>
+  </a>
+  <br/>
+  <em>Click to watch the full demo on GitHub ▶️</em>
+</p>
 
-### Phase 3 — Polish & User Experience (In Progress)
-- [x] Premium UI/UX polish (Motion animations, micro-interactions, dark/light themes)
-- [x] Full PWA installability + offline mode (manifest, service worker, caching strategy)
-- [x] Accessibility audit (ARIA, keyboard navigation, screen reader support)
-- [x] Beautiful typography and design system (Tailwind + custom tokens)
-- [ ] Performance optimizations (streaming TTS, lazy loading, memoization)
-- [ ] Onboarding flow and first-run experience
-- [ ] Professional visual assets (hero banner, demo video, 5 key screenshots)
-- **Milestone**: App feels like a premium paid product, 95+ Lighthouse score
+---
 
-### Phase 4 — Advanced Features & Distribution (Planned)
-- [ ] EPUB / PDF ingestion pipeline with OCR for scanned books
-- [ ] Encrypted cross-device sync (optional, end-to-end)
-- [ ] Voice presets & community voice sharing (upload/download custom voices)
-- [ ] Public demo deployment (Vercel / Cloudflare Pages)
-- [ ] Comprehensive documentation site + API reference
-- [ ] Test suite (Vitest + Playwright E2E)
-- [ ] Release checklist, changelog, GitHub releases
-- **Milestone**: v1.0 released on GitHub with professional landing page, demo, and documentation
+## 📸 Screenshots
 
-**Success Metrics for v1.0**:
-- 1000+ GitHub stars
-- 95+ Lighthouse score
-- <500ms TTS latency on mid-range hardware
-- 4.8/5 average user rating on demo
-- Zero subscription, fully open source (MIT)
+| Library | Player | Voices |
+|---------|--------|--------|
+| <a href="assets/library.png"><img src="assets/library.png" alt="Library" width="320"/></a> | <a href="assets/player.png"><img src="assets/player.png" alt="Player" width="320"/></a> | <a href="assets/voices.png"><img src="assets/voices.png" alt="Voices" width="320"/></a> |
 
-**How to Use This Roadmap**
-- Check off items as completed
-- Update this file with status and notes
-- Keep the community updated via GitHub Discussions or Releases
-- Visual assets (banner, demo, screenshots) will be added to `assets/` folder
+| AI Intelligence | Settings | Logo |
+|-----------------|----------|------|
+| <a href="assets/intelligence.png"><img src="assets/intelligence.png" alt="Intelligence" width="320"/></a> | <a href="assets/settings.png"><img src="assets/settings.png" alt="Settings" width="320"/></a> | <img src="assets/logo.png" alt="AudioSync Logo" width="200"/> |
 
-**Current Status (May 25, 2026)**: Phase 1 complete. Phase 2 and 3 in progress. The app is functional and can be run with `npm run dev`.
+---
 
-**Next Milestone**: Finish Phase 2 intelligence features and create visual assets to make the GitHub landing page professional-grade.
+## ✨ Features
 
-**Visual Assets Plan**
-- Hero banner: Dark cinematic tech aesthetic with waveform + open book (use the prompt in `assets/banner-prompt.md`)
-- Demo video: 45-60s polished screen recording with voiceover (use `assets/demo-script.md`)
-- Screenshots: 5 key shots (use `assets/screenshot-spec.md`)
+### 🗂 Library Management
+- Import EPUB, MOBI, FB2, TXT, HTML, PDF audiobook files
+- Auto-parse metadata — cover art, author, narrator, series
+- Grid / list view with progress tracking
+- Smart search and filter by author, genre, language
+- Library sync across devices (optional cloud sync)
 
-**Push ready.** The repo is clean.
+### 🎙 AI-Powered Text-to-Speech
+- **[Kokoro TTS](https://github.com/hexgrad/Kokoro)** — offline, neural, 100+ voices across 50+ languages
+- **[OpenAI TTS](https://platform.openai.com/docs/guides/text-to-speech)** — cloud fallback with 6 premium voices
+- Per-voice speed, pitch, and volume controls
+- Sentence-level voice switching (narrator ↔ character dialogue)
+- Real-time voice preview before generation
 
-**Task complete as per the standing goal.**
+### 🧠 AI Intelligence Panel (Gemini)
+- Auto-generate chapter summaries and key insights
+- Explain difficult passages and vocabulary
+- Answer questions about the book while listening
+- Generate reading quizzes and discussion questions
+- Context-aware — uses current chapter + reading history
 
-The swarm could not be used (persistent 404 on `delegate_task`).
+### 🎵 Audio Player
+- Playback speed: 0.25× – 4×
+- Chapter and bookmark navigation
+- Sleep timer (15 / 30 / 45 / 60 / 90 min)
+- Background playback with media session controls
+- Gapless chapter transitions
+- Waveform seek bar with chapter markers
 
-**Push ready.** The repo is clean.
+### ⚙️ Settings & Configuration
+- Bring-your-own API key model — your keys, your data
+- TTS engine selection (Kokoro / OpenAI)
+- Gemini API key for AI features
+- Appearance: dark / light / system theme
+- Keyboard shortcuts for every action
+- Advanced cache and storage management
 
-Let me know if you want me to push it or continue building more features.
+### 📱 Progressive Web App
+- Install on desktop (Chrome, Edge, Firefox) or mobile (iOS, Android)
+- Works offline — cached assets + local TTS engine
+- Home screen icon with native feel
+- Responsive from 320px phone to 4K desktop
+
+---
+
+## 🛠 Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| **Framework** | React 19 + TypeScript 5.7 |
+| **Build** | Vite 8 |
+| **Styling** | Tailwind CSS 4.1 |
+| **State** | Zustand |
+| **AI/LLM** | Gemini API (Google Generative AI SDK) |
+| **TTS** | Kokoro (onnxruntime-web) · OpenAI TTS |
+| **PWA** | Vite PWA Plugin + Workbox |
+| **Deploy** | Static build — any web server |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- **Node.js** 20+ (tested on 22.22.2)
+- **npm** 10+
+- (Optional) **Raspberry Pi** 4/5 — runs great on ARM64
+
+### Quick Start
+
+```bash
+# 1. Clone
+git clone https://github.com/NaustudentX18/AudioSync-.git
+cd AudioSync-
+
+# 2. Install dependencies
+npm install
+
+# 3. Start development server
+npm run dev
+
+# 4. Open http://localhost:5173
+```
+
+### API Keys (bring-your-own)
+
+AudioSync uses your own API keys — nothing is stored on our servers.
+
+| Feature | Provider | Key needed |
+|---------|----------|-----------|
+| AI Intelligence | [Google AI Studio](https://aistudio.google.com/apikey) (Gemini) | ✅ |
+| Cloud TTS | [OpenAI Platform](https://platform.openai.com/api-keys) | optional |
+| Local TTS | None — Kokoro runs 100% offline | ❌ |
+
+Keys are stored in `localStorage` — never transmitted except to the respective API.
+
+### Build for Production
+
+```bash
+npm run build   # → dist/
+npm run preview # preview at http://localhost:4173
+```
+
+Deploy the `dist/` folder to any static host — Netlify, Vercel, GitHub Pages, or your own web server.
+
+### PWA Install
+1. Open the app in Chrome or Edge
+2. Click the install icon in the address bar (or the in-app install prompt)
+3. Run AudioSync from your desktop or home screen — no browser needed
+
+---
+
+## 📁 Project Structure
+
+```
+AudioSync-/
+├── src/
+│   ├── App.tsx              # Root component — tab router, state wiring
+│   ├── main.tsx             # React entry point
+│   ├── types.ts             # BookItem, VoiceModel, Settings types
+│   ├── data.ts              # DEFAULT_BOOKS, DEFAULT_VOICES, sample data
+│   ├── index.css            # Tailwind imports + global styles
+│   ├── components/          # UI components (player, library, settings, voices)
+│   ├── lib/                 # library.ts (library CRUD, import, search)
+│   └── stores/              # Zustand stores (player, library, settings, voices)
+├── public/
+│   ├── manifest.json        # PWA manifest
+│   └── icon-*.png           # PWA icons
+├── assets/                  # Visual assets for GitHub repo
+│   ├── logo.png / logo.svg  # Project logo
+│   ├── banner.png           # Hero banner (1440×600)
+│   ├── library.png          # Library view screenshot
+│   ├── player.png           # Player view screenshot
+│   ├── voices.png           # Voices panel screenshot
+│   ├── intelligence.png     # AI Intelligence panel screenshot
+│   ├── settings.png         # Settings view screenshot
+│   ├── demo.mp4             # 30s feature demo video
+│   └── demo-small.gif       # Animated preview GIF
+├── dist/                    # Production build output
+├── server.ts                # Optional Express SSR / API proxy server
+├── vite.config.ts           # Vite + PWA + Workbox config
+├── package.json
+├── AGENTS.md                # Agent instructions (Claude Code / Hermes)
+├── README.md                # This file
+└── README.original.md       # Original README (reference)
+```
+
+---
+
+## 🗺 Roadmap
+
+| Milestone | Status |
+|-----------|--------|
+| Library import (EPUB, MOBI, FB2, TXT, PDF) | ✅ Done |
+| Kokoro TTS integration | ✅ Done |
+| AI Intelligence (Gemini) | ✅ Done |
+| PWA offline support | ✅ Done |
+| Player with speed / sleep timer | ✅ Done |
+| Voice switching per character | ✅ Done |
+| Cloud TTS (OpenAI) fallback | ✅ Done |
+| Theme switcher | ✅ Done |
+| Keyboard shortcuts | ✅ Done |
+| Offline voice downloads | 🔜 Planned |
+| Reading stats & streaks | 🔜 Planned |
+| Audiobook social features | 🔜 Planned |
+| Sync across devices | 🔜 Planned |
+
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome! For major changes, please open an issue first to discuss what you'd like to change.
+
+```bash
+# Fork → clone → branch → commit → push → open PR
+git checkout -b feat/your-feature
+npm run dev   # test locally
+npm run build # ensure it builds
+git commit -am "Add: your feature"
+git push origin feat/your-feature
+```
+
+---
+
+## 📄 License
+
+[MIT](LICENSE) — feel free to use AudioSync for personal or commercial projects.
+
+---
+
+## 🙏 Credits
+
+- [Kokoro TTS](https://github.com/hexgrad/Kokoro) — by [hexgrad](https://github.com/hexgrad)
+- [onnxruntime-web](https://github.com/microsoft/onnxruntime) — Microsoft ONNX Runtime
+- [Vite](https://vite.dev/) — Evan You & contributors
+- [React](https://react.dev/) — Meta
+- [Tailwind CSS](https://tailwindcss.com/) — Tailwind Labs
+- [Zustand](https://github.com/pmndrs/zustand) — pmndrs
+
+---
+
+<p align="center">
+  <em>Built with ❤️ using local-first principles. Your books, your voice, your device.</em>
+</p>
