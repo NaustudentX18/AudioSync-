@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { useSettingsStore } from './settingsStore';
 import { generateSpeech, type VoiceId } from '../lib/tts';
 
 interface PlayerState {
@@ -17,8 +18,8 @@ interface PlayerState {
 export const usePlayerStore = create<PlayerState>((set, get) => ({
   isPlaying: false,
   currentBook: null,
-  currentText: 'This is a test of AudioSync local TTS.',
-  voice: 'af_heart',
+  currentText: 'This is a test of AudioSync multi-provider TTS.',
+  voice: 'kokoro-af_heart',
   speed: 1.0,
 
   setIsPlaying: (playing) => set({ isPlaying: playing }),
@@ -27,11 +28,13 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   setSpeed: (speed) => set({ speed }),
 
   playText: async (text: string) => {
-    const { voice } = get();
+    const { voice, speed } = get();
+    const settings = useSettingsStore.getState();
+    const provider = settings.ttsProvider || 'kokoro';
     set({ isPlaying: true });
 
     try {
-      const wavBytes = await generateSpeech(text, voice);
+      const wavBytes = await generateSpeech(provider, text, voice, { speed });
       const audioContext = new AudioContext();
       const arrayBuffer = wavBytes.buffer.slice(
         wavBytes.byteOffset,

@@ -1,4 +1,4 @@
-export type VoiceEngine = "elevenlabs" | "openai" | "webspeech" | "kokoro";
+export type VoiceEngine = "elevenlabs" | "openai" | "webspeech" | "kokoro" | "stepfun";
 
 export interface BookItem {
   id: string;
@@ -26,7 +26,10 @@ export interface VoiceModel {
 export interface UserSettings {
   elevenlabsKey: string;
   openaiKey: string;
+  stepfunApiKey: string;
   preferredEngine: VoiceEngine;
   selectedVoiceId: string;
   playbackSpeed: number;
+  stepfunModel: string; // 'stepaudio-2.5-tts' | 'step-tts-2' | 'step-tts-mini'
+  ttsProvider: 'kokoro' | 'openai' | 'stepfun';
 }

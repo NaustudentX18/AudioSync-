@@ -75,6 +75,9 @@ export default defineConfig({
     sourcemap: true,
     rollupOptions: {
       output: {
+        // Externalize dynamically-imported modules that may not be present
+        // in node_modules at build time (e.g. web-vitals on constrained envs).
+        external: ['web-vitals'],
         manualChunks: {
           react: ['react', 'react-dom'],
           ai: ['@google/genai', 'kokoro-js'],

@@ -314,6 +314,10 @@ export default function App() {
         </div>
 
         <div className="mt-8 text-center"><div className="inline-flex items-center gap-2 px-4 py-1.5 bg-zinc-900 rounded-full border border-zinc-800"><div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" /><span className="text-xs text-zinc-400 font-mono">{status}</span></div></div>
+
+        <div className="mt-8">
+          <SyncPanel />
+        </div>
       </div>
     </div>
   );

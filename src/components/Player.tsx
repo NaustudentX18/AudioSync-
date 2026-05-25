@@ -3,21 +3,24 @@ import AudioVisualizer from './AudioVisualizer';
 import { WaveformCanvas } from './WaveformCanvas';
 import { type DownloadTask, type PlaybackProfile, type QueueItem, queueEnqueue, queueMove, queueRemove, queueShift } from '../lib/parity';
 
-type VoiceId =
-  | 'af_heart'
-  | 'af_bella'
-  | 'af_nicole'
-  | 'af_sky'
-  | 'am_adam'
-  | 'am_michael'
-  | 'am_onyx'
-  | 'bf_emma'
-  | 'bf_isabella'
-  | 'bm_george'
-  | 'bm_lewis';
+type VoiceItem = {
+  id: string;
+  label: string;
+  provider: 'kokoro' | 'openai' | 'stepfun';
+};
 
-const VOICES: VoiceId[] = [
-  'af_heart','af_bella','af_nicole','af_sky','am_adam','am_michael','am_onyx','bf_emma','bf_isabella','bm_george','bm_lewis',
+const KOKORO_VOICES: VoiceItem[] = [
+  { id: 'af_heart',    label: 'af_heart (Female)',   provider: 'kokoro' },
+  { id: 'af_bella',    label: 'af_bella (Female)',   provider: 'kokoro' },
+  { id: 'af_nicole',   label: 'af_nicole (Female)',  provider: 'kokoro' },
+  { id: 'af_sky',      label: 'af_sky (Female)',     provider: 'kokoro' },
+  { id: 'am_adam',     label: 'am_adam (Male)',      provider: 'kokoro' },
+  { id: 'am_michael',  label: 'am_michael (Male)',   provider: 'kokoro' },
+  { id: 'am_onyx',     label: 'am_onyx (Male)',      provider: 'kokoro' },
+  { id: 'bf_emma',     label: 'bf_emma (Female)',    provider: 'kokoro' },
+  { id: 'bf_isabella', label: 'bf_isabella (Female)',provider: 'kokoro' },
+  { id: 'bm_george',   label: 'bm_george (Male)',    provider: 'kokoro' },
+  { id: 'bm_lewis',    label: 'bm_lewis (Male)',     provider: 'kokoro' },
 ];
 
 type SleepTimerMode = 'off' | 'duration' | 'chapter-end';
@@ -46,8 +49,18 @@ export function Player() {
   const [text, setText] = useState(
     'This is a test of AudioSync local TTS using Kokoro. Add your audiobook text here to generate chapter navigation and playback controls.',
   );
-  const [voice, setVoice] = useState<VoiceId>('af_heart');
+  const { ttsProvider: settingsProvider, stepfunApiKey } = useSettingsStore();
+  const [ttsProvider, setTtsProvider] = useState<'kokoro' | 'openai' | 'stepfun'>(settingsProvider || 'kokoro');
+  const [voice, setVoice] = useState<string>('kokoro-af_heart');
+  const [allVoices, setAllVoices] = useState<VoiceItem[]>(KOKORO_VOICES);
   const [status, setStatus] = useState('Ready');
+  // Voice cloning modal
+  const [showCloneModal, setShowCloneModal] = useState(false);
+  const [cloneName, setCloneName] = useState('');
+  const [cloneAudio, setCloneAudio] = useState<File | null>(null);
+  const [clonePreview, setClonePreview] = useState<string | null>(null);
+  const [cloneStatus, setCloneStatus] = useState('');
+  const [isCloning, setIsCloning] = useState(false);
   const [pcmData, setPcmData] = useState<Float32Array | null>(null);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
@@ -154,6 +167,38 @@ export function Player() {
   useEffect(() => {
     localStorage.setItem(DOWNLOAD_KEY, JSON.stringify(downloads));
   }, [downloads]);
+
+  // Load voices when provider changes
+  useEffect(() => {
+    let cancelled = false;
+    const loadVoices = async () => {
+      if (ttsProvider === 'kokoro') {
+        if (!cancelled) setAllVoices(KOKORO_VOICES);
+        return;
+      }
+      if (ttsProvider === 'openai') {
+        const voices = ['alloy','echo','fable','onyx','nova','shimmer'].map(v => ({
+          id: v, label: v, provider: 'openai' as const,
+        }));
+        if (!cancelled) setAllVoices(voices);
+        return;
+      }
+      if (ttsProvider === 'stepfun') {
+        try {
+          const mod = await import('../lib/tts');
+          const { BUILTIN_VOICES } = mod;
+          const voices = BUILTIN_VOICES.map(v => ({
+            id: v.id, label: v.name, provider: 'stepfun' as const,
+          }));
+          if (!cancelled) setAllVoices(voices);
+        } catch {
+          if (!cancelled) setAllVoices(KOKORO_VOICES);
+        }
+      }
+    };
+    void loadVoices();
+    return () => { cancelled = true; };
+  }, [ttsProvider]);
 
   useEffect(() => {
     if (!isPlaying || sleepTimerMode !== 'duration' || sleepTimerSeconds <= 0) return;
@@ -353,12 +398,13 @@ export function Player() {
 
   const handlePlay = async () => {
     setIsPlaying(true);
-    setStatus('Generating speech...');
+    setStatus(`Synthesizing via ${ttsProvider}…`);
 
     try {
-      const { initTTS, generateSpeech } = await import('../lib/tts');
-      await initTTS();
-      const audioBytes = await generateSpeech(text, voice);
+      const { generateSpeech, listProviderVoices } = await import('../lib/tts');
+      // Resolve voice: strip provider prefix if present, else use as-is
+      const voiceId = voice.includes('-') ? voice.split('-').slice(1).join('-') : voice;
+      const audioBytes = await generateSpeech(ttsProvider, text, voiceId);
       await decodeWaveform(audioBytes);
 
       audioRef.current?.pause();
@@ -503,7 +549,7 @@ export function Player() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-2xl font-semibold">AudioSync Player</h2>
-          <p className="text-sm text-zinc-400 mt-1">Local Kokoro TTS • 100% Offline</p>
+          <p className="text-sm text-zinc-400 mt-1">Multi-Provider TTS · Kokoro · OpenAI · StepFun</p>
         </div>
         <div className="text-right">
           <div className="text-xs text-zinc-500">STATUS</div>
@@ -712,19 +758,134 @@ export function Player() {
           {isPlaying ? 'Generating...' : 'Play Voice'}
         </button>
 
-        <select
-          value={voice}
-          onChange={(e) => setVoice(e.target.value as VoiceId)}
-          className="bg-zinc-950 border border-zinc-800 text-white px-5 rounded-xl font-mono text-sm"
-          aria-label="Voice model"
-        >
-          {voices.map((v) => (
-            <option key={v} value={v}>
-              {v}
-            </option>
-          ))}
-        </select>
+        <div className="flex gap-2 items-center">
+          <select
+            value={ttsProvider}
+            onChange={(e) => { setTtsProvider(e.target.value as any); setVoice(`${e.target.value}-default`); }}
+            className="bg-zinc-950 border border-zinc-800 text-white px-3 rounded-xl text-xs"
+            aria-label="TTS provider"
+          >
+            <option value="kokoro">Kokoro (local)</option>
+            <option value="openai">OpenAI</option>
+            <option value="stepfun">StepFun</option>
+          </select>
+          <select
+            value={voice}
+            onChange={(e) => setVoice(e.target.value)}
+            className="bg-zinc-950 border border-zinc-800 text-white px-5 rounded-xl font-mono text-sm"
+            aria-label="Voice model"
+          >
+            {allVoices.map((v) => (
+              <option key={v.id} value={`${v.provider}-${v.id}`}>
+                [{v.provider}] {v.label}
+              </option>
+            ))}
+          </select>
+          {ttsProvider === 'stepfun' && (
+            <button
+              onClick={() => setShowCloneModal(true)}
+              className="px-3 py-2 text-xs rounded-xl border border-amber-600 text-amber-400 hover:bg-amber-600/10 whitespace-nowrap"
+            >
+              + Clone Voice
+            </button>
+          )}
+        </div>
       </div>
+      {/* Voice Cloning Modal */}
+      {showCloneModal && (
+      <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50" onClick={() => setShowCloneModal(false)}>
+        <div className="bg-zinc-900 border border-zinc-700 rounded-2xl p-6 max-w-md w-full" onClick={(e) => e.stopPropagation()}>
+          <h3 className="text-lg font-semibold mb-2">Clone Voice (StepFun)</h3>
+          <p className="text-xs text-zinc-400 mb-4">
+            Upload a 5–20 second WAV/MP3 reference sample. StepFun will create a custom voice you can use in TTS.
+          </p>
+
+          <label className="block text-xs text-zinc-300 mb-1">Voice Name</label>
+          <input
+            value={cloneName}
+            onChange={(e) => setCloneName(e.target.value)}
+            placeholder="My Custom Voice"
+            className="w-full mb-3 px-3 py-2 text-sm rounded-lg bg-zinc-950 border border-zinc-800"
+          />
+
+          <label className="block text-xs text-zinc-300 mb-1">Reference Audio</label>
+          <input
+            type="file"
+            accept="audio/wav,audio/mpeg"
+            onChange={(e) => { const f = e.target.files?.[0]; if (f) setCloneAudio(f); }}
+            className="w-full mb-2 text-xs"
+          />
+          {cloneAudio && (
+            <div className="text-xs text-zinc-400 mb-3">
+              {cloneAudio.name} ({(cloneAudio.size / 1024).toFixed(0)} KB)
+            </div>
+          )}
+
+          {clonePreview && (
+            <div className="mb-3">
+              <div className="text-xs text-zinc-400 mb-1">Preview</div>
+              <audio src={clonePreview} controls className="w-full h-8" />
+            </div>
+          )}
+
+          {cloneStatus && <div className="text-xs text-amber-400 mb-3">{cloneStatus}</div>}
+
+          <div className="flex gap-2">
+            <button
+              onClick={async () => {
+                if (!cloneAudio || !cloneName.trim()) {
+                  setCloneStatus('Name and audio file required');
+                  return;
+                }
+                setIsCloning(true);
+                setCloneStatus('Uploading reference audio…');
+                try {
+                  const { StepFunTTS } = await import('../lib/tts-stepfun');
+                  const client = new StepFunTTS(
+                    stepfunApiKey || '',
+                    'https://api.stepfun.ai/v1',
+                    'step-tts-2',
+                  );
+                  setCloneStatus('Uploading…');
+                  const fileId = await client.uploadReferenceAudio(cloneAudio);
+                  setCloneStatus('Creating voice clone…');
+                  const result = await client.cloneVoice({
+                    model: 'step-tts-2',
+                    file_id: fileId,
+                    sample_text: cloneName,
+                  });
+                  const audioB64 = result.sample_audio;
+                  setClonePreview(`data:audio/wav;base64,${audioB64}`);
+                  setCloneStatus(`Voice cloned! ID: ${result.id}`);
+                  setShowCloneModal(false);
+                  // Refresh voice list
+                  const mod2 = await import('../lib/tts');
+                  const { BUILTIN_VOICES } = mod2;
+                  setAllVoices(BUILTIN_VOICES.map(v => ({
+                    id: v.id, label: v.name, provider: 'stepfun' as const, isCloned: true,
+                  })));
+                } catch (err) {
+                  setCloneStatus(`Error: ${err}`);
+                } finally {
+                  setIsCloning(false);
+                }
+              }}
+              disabled={isCloning}
+              className="flex-1 py-2 text-sm rounded-xl bg-amber-600 text-white font-semibold disabled:opacity-50"
+            >
+              {isCloning ? 'Cloning…' : 'Clone Voice'}
+            </button>
+            <button
+              onClick={() => setShowCloneModal(false)}
+              className="px-4 py-2 text-sm rounded-xl border border-zinc-700 text-zinc-300"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
     </div>
+
   );
 }
