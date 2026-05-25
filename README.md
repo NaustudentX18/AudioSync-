@@ -1,98 +1,231 @@
-# AudioSync — Ultimate Roadmap (2026 Edition)
+# AudioSync
 
-**Project**: Premium Local-First Audiobook Player  
-**Vision**: Deliver Audible-grade experience without subscriptions — 100% local Kokoro TTS (82M params, 54 voices, 8 languages as of v2.3.0, 2026), optional Gemini intelligence (BYO-key), beautiful PWA UI, offline-first.
+<p align="center">
+  <img src="assets/logo.png" alt="AudioSync logo" width="96" height="96" />
+</p>
 
-**Latest Research (May 2026)**:
-- Kokoro-82M v2.3.0: Enhanced model/voice management, FP16 weights <1GB, <2GB VRAM, Vulkan backends, custom voices, multi-language (54 voices across 8 languages), Elo ratings outperforming larger models.
-- Best practices for media PWAs: Offline caching with Workbox, Web Audio API for low-latency playback, Zustand for state, Tailwind + Motion for premium UI.
-- Professional GitHub landing pages: Hero banner, clear value proposition, feature grid, dynamic roadmap, tech stack table, screenshots/GIFs, getting started, contributing, license (inspired by Linear, Vercel, Stripe, Best-README-Template).
+<p align="center">
+  <strong>Local-first audiobook player</strong> &mdash; import, play, bookmark, and learn with AI. Works entirely offline.
+</p>
 
-**Success Criteria**:
-- 100% local TTS with <500ms latency on mid-range hardware
-- Installable PWA with offline playback
-- Professional, polished UI (dark theme, smooth animations)
-- Gemini intelligence features with BYO-key
-- Open source, well-documented, easy to contribute
+<p align="center">
+  <a href="https://github.com/NaustudentX18/AudioSync-/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/NaustudentX18/AudioSync-/ci.yml?label=CI&logo=github&style=flat-square" alt="CI" /></a>
+  <a href="https://github.com/NaustudentX18/AudioSync-/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" alt="License: MIT" /></a>
+  <a href="https://github.com/NaustudentX18/AudioSync-/blob/main/package.json"><img src="https://img.shields.io/badge/TypeScript-5.8-blue.svg?style=flat-square" alt="TypeScript" /></a>
+  <a href="https://github.com/NaustudentX18/AudioSync-/blob/main/package.json"><img src="https://img.shields.io/badge/Vite-6.2-646CFF.svg?style=flat-square" alt="Vite" /></a>
+  <a href="https://github.com/NaustudentX18/AudioSync-/blob/main/package.json"><img src="https://img.shields.io/badge/React-19-61DAFB.svg?style=flat-square" alt="React" /></a>
+  <img src="https://img.shields.io/badge/PWA-Ready-4A154B.svg?style=flat-square" alt="PWA" />
+</p>
 
-**Ultimate Roadmap (Check-off Ready)**
+---
 
-### Phase 0 — Foundation (Complete ✅)
-- [x] Modern React 19 + Vite + TypeScript + Tailwind stack
-- [x] Kokoro-js v2.3.0 integration (local TTS, 54 voices, Vulkan support)
-- [x] Gemini client setup (latest API, summarization, chapter detection)
-- [x] Basic project structure, testing (Vitest), performance baseline
-- [x] PWA foundation with VitePWA plugin
-- **Milestone**: `npm run dev` runs with working player
+## Demo
 
-### Phase 1 — Core Playback (Complete ✅)
-- [x] Book import (TXT, EPUB, PDF) + metadata extraction
-- [x] Beautiful audio player with waveform, progress, controls
-- [x] Chapter navigation & smart bookmarks
-- [x] Playback speed (0.5x–2.0x), sleep timer, queue system
-- [x] Multiple Kokoro voices with quality ratings and easy switching
-- [x] Offline caching of generated audio (Workbox + IndexedDB)
-- [x] State management with Zustand
-- **Milestone**: Full audiobook playback with chapters working offline
+<p align="center">
+  <img src="assets/demo-small.gif" alt="AudioSync demo" width="720" />
+</p>
 
-### Phase 2 — Intelligence Layer (In Progress)
-- [x] Gemini-powered chapter detection & segmentation
-- [x] Automatic book summarization
-- [ ] Smart highlights & contextual notes (clickable highlights with AI insights)
-- [ ] Voice cloning / style matching via Gemini + Kokoro custom voices
-- [ ] "Ask the book" conversational mode (RAG over book content)
-- [ ] Book recommendation engine based on listening history
-- **Milestone**: Full AI intelligence layer with conversational interface
+<p align="center">
+  <a href="assets/demo.mp4">▶ Watch full demo video (MP4, 508 KB)</a>
+</p>
 
-### Phase 3 — Polish & User Experience (In Progress)
-- [x] Premium UI/UX polish (Motion animations, micro-interactions, dark/light themes)
-- [x] Full PWA installability + offline mode (manifest, service worker, caching strategy)
-- [x] Accessibility audit (ARIA, keyboard navigation, screen reader support)
-- [x] Beautiful typography and design system (Tailwind + custom tokens)
-- [ ] Performance optimizations (streaming TTS, lazy loading, memoization)
-- [ ] Onboarding flow and first-run experience
-- [ ] Professional visual assets (hero banner, demo video, 5 key screenshots)
-- **Milestone**: App feels like a premium paid product, 95+ Lighthouse score
+---
 
-### Phase 4 — Advanced Features & Distribution (Planned)
-- [ ] EPUB / PDF ingestion pipeline with OCR for scanned books
-- [ ] Encrypted cross-device sync (optional, end-to-end)
-- [ ] Voice presets & community voice sharing (upload/download custom voices)
-- [ ] Public demo deployment (Vercel / Cloudflare Pages)
-- [ ] Comprehensive documentation site + API reference
-- [ ] Test suite (Vitest + Playwright E2E)
-- [ ] Release checklist, changelog, GitHub releases
-- **Milestone**: v1.0 released on GitHub with professional landing page, demo, and documentation
+## Screenshots
 
-**Success Metrics for v1.0**:
-- 1000+ GitHub stars
-- 95+ Lighthouse score
-- <500ms TTS latency on mid-range hardware
-- 4.8/5 average user rating on demo
-- Zero subscription, fully open source (MIT)
+| Library | Player | Voices |
+|---------|--------|--------|
+| <img src="assets/library.png" alt="Library view" width="300" /> | <img src="assets/player.png" alt="Player view" width="300" /> | <img src="assets/voices.png" alt="Voice selector" width="300" /> |
 
-**How to Use This Roadmap**
-- Check off items as completed
-- Update this file with status and notes
-- Keep the community updated via GitHub Discussions or Releases
-- Visual assets (banner, demo, screenshots) will be added to `assets/` folder
+| Intelligence | Settings |
+|--------------|----------|
+| <img src="assets/intelligence.png" alt="AI panel" width="300" /> | <img src="assets/settings.png" alt="Settings" width="300" /> |
 
-**Current Status (May 25, 2026)**: Phase 1 complete. Phase 6 (Sync Layer) in progress — retry queue with localStorage persistence, conflict viewer with export/clear, and per-field conflict resolution built. Phase 2 and 3 remain open. App runs with `npm run dev`.
+---
 
+## Features
 
-**Next Milestone**: Finish Phase 2 intelligence features and Phase 6 sync backend integration.
+### Library
+- Import **TXT, EPUB, PDF, MOBI, FB2** via drag-and-drop or file picker
+- Batch import queue with progress tracking
+- Editable metadata (title, author, genre) and cover upload
+- Grid / list / shelves view modes
+- Smart collections with rule engine (field + contains matching)
+- Dual search: Fuse.js on metadata + FlexSearch on full text
 
-**Visual Assets Plan**
-- Hero banner: Dark cinematic tech aesthetic with waveform + open book (use the prompt in `assets/banner-prompt.md`)
-- Demo video: 45-60s polished screen recording with voiceover (use `assets/demo-script.md`)
-- Screenshots: 5 key shots (use `assets/screenshot-spec.md`)
+### Player
+- Real-time waveform rendered on `<canvas>` (Web Worker off main thread)
+- Chapter navigation: list sidebar, jump buttons, keyboard shortcuts
+- Reading position resume from IndexedDB — pick up where you left off
+- Playback speed: 0.5&times;&ndash;3&times; with smart rewind (configurable)
+- Sleep timer: duration presets, chapter-boundary stop, 5-second fade-out
+- Bookmarks: position bookmarks + quote extraction (text from chapter)
+- Gesture controls: swipe, double-tap, long-press with haptic feedback
+- Media Session API: lock screen controls, background playback, next/prev/stop
 
-**Push ready.** The repo is clean.
+### Intelligence
+- **Gemini integration** (optional, bring-your-own API key)
+  - AI chapter detection from unstructured text
+  - Chapter summarization at variable depth
+  - Q&A panel over current chapter context
+- **Kokoro TTS** (local, offline) — 16 voice models bundled
+  - `af_heart`, `af_bella`, `af_nicole`, `af_sky`
+  - `am_adam`, `am_michael`, `am_onyx`
+  - `bf_emma`, `bf_isabella`, `bm_george`, `bm_lewis`
+  - `oa-echo`, `oa-fable`, `oa-onyx`, `oa-nova`, `oa-shimmer`
+- OpenAI TTS (optional cloud fallback) — alloy, echo, fable, onyx, nova, shimmer
 
-**Task complete as per the standing goal.**
+### Platform
+- **PWA** with service worker: installable, offline runtime, background sync queue
+- IndexedDB persistence via **Dexie.js** — schema versioned, queryable
+- Web Vitals monitoring (LCP, INP, CLS) + structured error logging
+- i18n baseline: English + Arabic, RTL toggle
+- WCAG 2.2 AA accessibility pass: labels, focus rings, live regions, keyboard shortcuts
 
-The swarm could not be used (persistent 404 on `delegate_task`).
+---
 
-**Push ready.** The repo is clean.
+## Tech Stack
 
-Let me know if you want me to push it or continue building more features.
+| Layer | Tool |
+|-------|------|
+| Framework | React 19 |
+| Language | TypeScript 5.8 |
+| Build | Vite 6 |
+| Styling | Tailwind CSS 4 |
+| State | Zustand |
+| DB (browser) | Dexie.js / IndexedDB |
+| TTS (local) | Kokoro.js (ONNX Runtime Web) |
+| TTS (cloud) | OpenAI TTS (optional) |
+| AI | Google Gemini API (optional) |
+| PWA | vite-plugin-pwa + Workbox |
+| Testing | Vitest + Playwright |
+| CI | GitHub Actions |
+
+---
+
+## Getting Started
+
+```bash
+git clone https://github.com/NaustudentX18/AudioSync-.git
+cd AudioSync-
+npm install
+npm run dev
+```
+
+Open <http://localhost:5173> in your browser.
+
+### Build for production
+
+```bash
+npm run build
+npm run preview   # serve dist/ locally
+```
+
+### API keys (optional)
+
+AudioSync is **local-first** and works without any API keys. Optional integrations are configured in Settings:
+
+| Key | Purpose | Where to get |
+|-----|---------|--------------|
+| `VITE_GEMINI_API_KEY` | AI chapter detection, summarization, Q&A | [Google AI Studio](https://aistudio.google.com/apikey) |
+| OpenAI TTS key | Cloud TTS fallback | [OpenAI Platform](https://platform.openai.com) |
+
+Keys are stored in `localStorage` only — never committed, never logged.
+
+---
+
+## Roadmap
+
+| Phase | Status | Notes |
+|-------|--------|-------|
+| Phase 0 — Foundation | ✅ Done | AGENTS.md, architecture, library, TTS, Gemini client |
+| Phase 1 — Core Playback | ✅ Done | Waveform, chapters, resume, sleep timer, speed, Media Session |
+| Phase 2 — Bookmarks & Gestures | ✅ Done | Position/quote bookmarks, swipe/double-tap/long-press, haptics |
+| Phase 3 — Library & Import | ✅ Done | EPUB/PDF/MOBI/FB2, drag-drop, search, smart collections |
+| Phase 4 — Polish & Accessibility | ✅ Done | WCAG 2.2 AA pass, live viz, AI chapters, sync, speed ramping, stats, export |
+| Phase 5 — Infrastructure & Hardening | ✅ Done | PWA, IndexedDB, Web Vitals, i18n, Sentry, CI/CD, bundle opt |
+| Phase 6 — Feature Parity Bridge | 🔄 In Progress | Sync reliability, queue workflows, playback profiles, offline exports |
+
+See [`docs/roadmap-detailed.md`](docs/roadmap-detailed.md) for the full breakdown with effort estimates and open questions.
+
+---
+
+## Project Structure
+
+```
+AudioSync-/
+├── src/
+│   ├── App.tsx              # Root — tab router, library, settings
+│   ├── main.tsx             # React entry + boot splash teardown
+│   ├── lib/
+│   │   ├── library.ts       # Library CRUD, import, search, metadata
+│   │   ├── tts.ts           # Kokoro TTS engine + OpenAI fallback
+│   │   ├── gemini.ts        # Gemini AI client
+│   │   ├── db.ts            # Dexie.js schema
+│   │   ├── secureStorage.ts # AES-GCM encrypted local state
+│   │   ├── parity.ts        # Sync reliability, LWW merge, retry queue
+│   │   └── observability.ts # Web Vitals, structured logging, error hooks
+│   ├── stores/              # Zustand stores (player, library, settings, voices)
+│   ├── components/
+│   │   ├── Player.tsx       # Main player (waveform, chapters, sleep timer, speed)
+│   │   ├── WaveformCanvas.tsx
+│   │   ├── ChapterNavigator.tsx
+│   │   └── SyncPanel.tsx    # Sync conflict viewer / retry queue
+│   └── workers/
+│       └── waveform.worker.ts
+├── public/
+│   ├── logo.svg             # Animated EQ logo
+│   ├── pwa-192x192.png
+│   └── pwa-512x512.png
+├── assets/                  # Screenshots, demo, banner
+├── docs/
+│   ├── roadmap-detailed.md
+│   └── research/
+├── server.ts                # Express SSR / API proxy (optional)
+├── vite.config.ts           # Vite + PWA plugin + manual chunking
+├── .github/workflows/ci.yml
+└── package.json
+```
+
+---
+
+## Development
+
+```bash
+# Install
+npm install
+
+# Dev server (port 5173)
+npm run dev
+
+# Lint
+npm run lint
+
+# Test
+npm run test
+npm run test:e2e
+
+# Build
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+---
+
+## Contributing
+
+Pull requests are welcome. Please open an issue first to discuss any significant change.
+
+1. Fork → `git checkout -b feat/my-feature`
+2. Commit: `feat: add something useful`
+3. Push → open PR against `main`
+
+See [`.github/PULL_REQUEST_TEMPLATE.md`](.github/PULL_REQUEST_TEMPLATE.md).
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE).

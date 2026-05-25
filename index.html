@@ -3,11 +3,75 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AuraReader — Premium BYO-Key Audiobook Player</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' https://generativelanguage.googleapis.com; worker-src 'self' blob:;" />
+    <title>AudioSync</title>
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <link rel="apple-touch-icon" href="/pwa-192x192.png" />
+    <meta name="theme-color" content="#09090b" />
+    <meta name="description" content="AudioSync — local-first audiobook player with Kokoro TTS and AI helpers" />
   </head>
   <body>
+    <!--
+      Boot splash — shown until React hydrates.
+      Uses the animated SVG logo; fades out in main.tsx.
+      Inline styles to avoid FOUC; kept intentionally minimal.
+    -->
+    <div
+      id="boot-splash"
+      aria-live="polite"
+      aria-label="AudioSync is loading"
+      style="
+        position: fixed; inset: 0;
+        display: grid; place-items: center;
+        background: #09090b;
+        z-index: 9999;
+        transition: opacity 260ms ease-out;
+      "
+    >
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 24px;">
+        <img
+          src="/logo.svg"
+          alt=""
+          width="96"
+          height="96"
+          style="filter: drop-shadow(0 0 24px rgba(99,102,241,0.45));"
+        />
+        <div style="font-size: 32px; font-weight: 700; letter-spacing: -0.03em; color: #fafafa;">
+          AudioSync
+        </div>
+        <div style="font-size: 13px; color: #71717a; letter-spacing: 0.01em;">
+          Loading library, player, and offline cache&hellip;
+        </div>
+        <!-- Skeleton shimmer bar -->
+        <div
+          style="
+            width: 200px; height: 3px;
+            background: #27272a;
+            border-radius: 999px;
+            overflow: hidden;
+          "
+        >
+          <span
+            style="
+              display: block; height: 100%; width: 40%;
+              background: linear-gradient(90deg, #6366f1, #22d3ee);
+              animation: boot-slide 1.4s ease-in-out infinite alternate;
+              border-radius: 999px;
+            "
+          ></span>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      @keyframes boot-slide {
+        from  { transform: translateX(-80%); opacity: 0.6; }
+        to    { transform: translateX(160%); opacity: 1; }
+      }
+      html, body { margin: 0; padding: 0; background: #09090b; }
+    </style>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-
