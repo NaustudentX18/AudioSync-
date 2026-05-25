@@ -1,79 +1,42 @@
-# AudioSync — Visual Assets Plan
+# Visual Assets
 
-This document outlines all the visual assets needed to make the GitHub page look world-class.
+This folder contains all visual assets for the AudioSync GitHub repository.
 
-## Required Assets
+## Logo
+| File | Description |
+|------|-------------|
+| `logo.png` | AudioSync project logo (512×512, PNG) |
+| `logo.svg` | Vector version of the logo with animated EQ bars |
 
-### 1. Hero Banner (`banner.png`)
-- **Dimensions**: 1200×400px or 1920×600px (wide)
-- **Style**: Dark, premium, modern
-- **Content ideas**:
-  - Clean mockup of the AudioSync player interface
-  - Subtle waveform or book elements
-  - Text: "AudioSync" with tagline
-- **Tools**: Figma, Canva, or Midjourney + Photoshop
+## Hero Banner
+| File | Description |
+|------|-------------|
+| `banner.png` | Hero banner (1440×600) — AudioSync dark theme with CTA buttons |
 
-### 2. Demo Video / GIF
-- **Format**: `.mp4` (primary) + `.gif` (for README preview)
-- **Length**: 30–60 seconds
-- **Content**:
-  - Opening the app
-  - Importing a book
-  - Playing with Kokoro voice
-  - Showing smooth UI interactions
-- **Style**: Clean screen recording with subtle zoom/pan
+## Screenshots
+| File | View |
+|------|------|
+| `library.png` | Library view — grid of audiobooks with covers |
+| `player.png` | Audio player — playback controls, chapter list, EQ |
+| `voices.png` | Voice selector — Kokoro TTS voice cards |
+| `intelligence.png` | AI Intelligence panel — Gemini chat + summary |
+| `settings.png` | Settings — API keys, TTS engine, theme, cache |
 
-### 3. Screenshots
+## Demo
+| File | Description |
+|------|-------------|
+| `demo.mp4` | 30-second feature demo video (H.264, 508 KB) |
+| `demo-small.gif` | Animated GIF preview (8 fps, 480p, 686 KB) |
+| `demo.webm` | Raw recording (source, 1.8 MB) |
 
-| Screenshot          | Description                              | Priority |
-|---------------------|------------------------------------------|----------|
-| `library.png`       | Main library view with book covers       | High     |
-| `player.png`        | Audio player interface (open book)       | High     |
-| `voices.png`        | Voice selection modal                    | Medium   |
-| `settings.png`      | Settings / Gemini configuration          | Medium   |
-| `offline.png`       | Offline mode indicator                   | Low      |
-
-**Recommended specs**:
-- 1440px wide
-- Dark theme
-- High quality (2x retina if possible)
-- Consistent window frame / browser chrome
-
-### 4. Logo (Optional but recommended)
-- `logo.svg` (vector)
-- `logo.png` (512×512)
-- Simple, modern wordmark or icon
+## HTML Source Files
+Temporary hand-crafted HTML pages used to generate assets (can be deleted after capture):
+- `banner.html` — hero banner source
+- `intelligence.html` — AI panel source
+- `settings.html` — settings view source
+- `demo.html` — animated demo source (5 scenes)
+- `logo.html` — logo source
 
 ---
 
-## Recommended Tools & Workflow
-
-1. **Figma** — Best for consistent design system
-2. **ScreenFlow / OBS** — For high-quality demo recordings
-3. **CleanShot X** (Mac) or **ShareX** (Windows) — For beautiful screenshots
-4. **Midjourney / Flux** — For hero banner concept art
-
----
-
-## Current Status
-
-| Asset           | Status     | Notes |
-|-----------------|------------|-------|
-| `banner.png`    | Missing    | Highest priority |
-| Demo video      | Missing    | Record once player is usable |
-| Screenshots     | Missing    | Take after Phase 1 completion |
-| `logo.svg`      | Missing    | Nice to have |
-
----
-
-## Next Steps
-
-1. Create `banner.png` first (biggest visual impact)
-2. Record demo video once basic playback works
-3. Take screenshots during UI polish phase
-4. Update README.md with real image paths
-
----
-
-**Owner**: NaustudentX18  
-**Last Updated**: May 2026
+**Screenshot spec:** See [`screenshot-spec.md`](./screenshot-spec.md) for capture parameters and viewport sizes.
