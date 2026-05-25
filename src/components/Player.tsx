@@ -2,8 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import AudioVisualizer from './AudioVisualizer';
 import { WaveformCanvas } from './WaveformCanvas';
 import { type DownloadTask, type PlaybackProfile, type QueueItem, queueEnqueue, queueMove, queueRemove, queueShift } from '../lib/parity';
-import { useSettingsStore } from '../stores/settingsStore';
-import { VOICES, VoiceId } from '../lib/tts';
+import { VOICES, VoiceId, BUILTIN_VOICES } from '../lib/tts';
 
 type VoiceItem = {
   id: string;
@@ -51,8 +50,8 @@ export function Player() {
   const [text, setText] = useState(
     'This is a test of AudioSync local TTS using Kokoro. Add your audiobook text here to generate chapter navigation and playback controls.',
   );
-  const { ttsProvider: settingsProvider, stepfunApiKey } = useSettingsStore();
-  const [ttsProvider, setTtsProvider] = useState<'kokoro' | 'openai' | 'stepfun'>(settingsProvider || 'kokoro');
+  const [ttsProvider, setTtsProvider] = useState<'kokoro' | 'openai' | 'stepfun'>('kokoro');
+  const [stepfunApiKey, setStepfunApiKey] = useState('');
   const [voice, setVoice] = useState<string>('kokoro-af_heart');
   const [allVoices, setAllVoices] = useState<VoiceItem[]>(KOKORO_VOICES);
   const [status, setStatus] = useState('Ready');
@@ -78,6 +77,20 @@ export function Player() {
   const [queue, setQueue] = useState<QueueItem[]>([]);
   const [downloads, setDownloads] = useState<DownloadTask[]>([]);
 
+  // Load settings from localStorage on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('audiosync_settings');
+      if (saved) {
+        const settings = JSON.parse(saved);
+        if (settings.ttsProvider) setTtsProvider(settings.ttsProvider);
+        if (settings.stepfunApiKey) setStepfunApiKey(settings.stepfunApiKey);
+        if (settings.selectedVoiceId) setVoice(settings.selectedVoiceId);
+      }
+    } catch (e) {
+      console.error('Failed to load settings:', e);
+    }
+  }, []);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const audioUrlRef = useRef<string | null>(null);
   const lastPausedAtRef = useRef<number | null>(null);
@@ -187,7 +200,6 @@ export function Player() {
       }
       if (ttsProvider === 'stepfun') {
         try {
-          const mod = await import('../lib/tts');
           const { BUILTIN_VOICES } = mod;
           const voices = BUILTIN_VOICES.map(v => ({
             id: v.id, label: v.name, provider: 'stepfun' as const,
@@ -403,7 +415,6 @@ export function Player() {
     setStatus(`Synthesizing via ${ttsProvider}…`);
 
     try {
-      const { generateSpeech, listProviderVoices } = await import('../lib/tts');
       // Resolve voice: strip provider prefix if present, else use as-is
       const voiceId = voice.includes('-') ? voice.split('-').slice(1).join('-') : voice;
       const audioBytes = await generateSpeech(ttsProvider, text, voiceId);
@@ -842,7 +853,6 @@ export function Player() {
                 setIsCloning(true);
                 setCloneStatus('Uploading reference audio…');
                 try {
-                  const { StepFunTTS } = await import('../lib/tts-stepfun');
                   const client = new StepFunTTS(
                     stepfunApiKey || '',
                     'https://api.stepfun.ai/v1',
@@ -861,7 +871,6 @@ export function Player() {
                   setCloneStatus(`Voice cloned! ID: ${result.id}`);
                   setShowCloneModal(false);
                   // Refresh voice list
-                  const mod2 = await import('../lib/tts');
                   const { BUILTIN_VOICES } = mod2;
                   setAllVoices(BUILTIN_VOICES.map(v => ({
                     id: v.id, label: v.name, provider: 'stepfun' as const, isCloned: true,
