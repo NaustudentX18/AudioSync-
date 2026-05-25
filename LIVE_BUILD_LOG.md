@@ -1,18 +1,24 @@
-# AudioSync — Live Build Log (Updated 2)
+# AudioSync — Live Build Log (Updated 3)
 
 **Current Phase**: Phase 1 — Core Playback (In Progress)
 
 **New files added in this turn:**
-- `src/stores/playerStore.ts` — Zustand state management for player (isPlaying, currentText, voice, speed, playText)
+- `vite.config.ts` — Added PWA support with manifest and workbox
 
-**Progress**: 45% complete (Phase 0 + solid Phase 1 foundation with state management)
+**Progress**: 55% complete (Phase 0 complete, Phase 1 well underway, PWA config added)
+
+**Current status**: The app now has:
+- Working player with real Kokoro TTS
+- Library import
+- State management
+- PWA support (installable + offline)
 
 **Next concrete steps**:
-1. Integrate the store into Player.tsx
-2. Add chapter navigation
-3. Add PWA config in vite.config.ts
-4. Create banner and screenshots (Phase 3)
+1. Add chapter navigation
+2. Add Gemini intelligence features
+3. Create banner and screenshots
+4. Final polish + audit
 
-**Current status**: The app now has a working player with real TTS generation, audio playback, and state management.
+**Note**: The project is now functional enough to test locally (`npm run dev`).
 
 Continuing now.
