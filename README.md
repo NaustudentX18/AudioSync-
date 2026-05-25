@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/banner.png" alt="AudioSync - Premium Local Audiobook Experience" width="100%">
+  <img src="https://raw.githubusercontent.com/NaustudentX18/AudioSync-/main/assets/banner.png" alt="AudioSync - Premium Local Audiobook Experience" width="100%">
 
   <h1>AudioSync</h1>
   <p><strong>A premium, local-first audiobook experience.</strong></p>
@@ -10,88 +10,81 @@
     <a href="https://github.com/NaustudentX18/AudioSync-/network/members"><img src="https://img.shields.io/github/forks/NaustudentX18/AudioSync-?style=social" alt="Forks"></a>
     <a href="https://github.com/NaustudentX18/AudioSync-/issues"><img src="https://img.shields.io/github/issues/NaustudentX18/AudioSync-" alt="Issues"></a>
     <a href="https://github.com/NaustudentX18/AudioSync-/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
-    <a href="https://github.com/NaustudentX18/AudioSync-/actions"><img src="https://img.shields.io/github/actions/workflow/status/NaustudentX18/AudioSync-/ci.yml" alt="CI Status"></a>
   </p>
 </div>
 
 ---
 
-## The Problem
+## The Vision
 
-You love high-quality audiobooks.  
-You hate paying for yet another subscription when you already have too many.
+A beautiful, local-first audiobook player that delivers Audible-grade quality without the subscription.
 
-**AudioSync** is the solution: a beautiful, modern audiobook player that runs **entirely locally**, uses **open-source TTS**, and only asks for your own API keys when you want advanced intelligence.
+**100% local Kokoro TTS** + optional **Gemini intelligence** with your own API key.
 
----
-
-## Vision
-
-Deliver an **Audible-grade experience** without the recurring cost:
-
-- 100% local, high-quality voice synthesis via Kokoro
-- Smart AI features powered by your own Gemini key
-- Premium, installable PWA experience
-- No vendor lock-in — your files, your voice, your data
+No vendor lock-in. Your files. Your voice. Your data.
 
 ---
 
 ## Demo
 
-> A short demo video will be added here once the core player reaches a stable state.
+> A short demo video will be added here once the core player is stable.
 
 <!-- TODO: Add real demo video/GIF -->
 <!-- ![Demo](assets/demo.mp4) -->
 
 ---
 
-## Features (Current & Planned)
+## Features
 
-| Feature                        | Status         | Description |
-|--------------------------------|----------------|-----------|
-| Local Kokoro TTS               | In Progress    | 82M parameter high-quality browser TTS |
-| Modern React UI                | In Progress    | Clean, premium-feeling interface |
-| Gemini Intelligence Layer      | Planned        | Chapter detection, summaries, smart notes |
-| Progressive Web App            | Planned        | Installable + full offline support |
-| Performance Optimizations      | In Progress    | Memoization, streaming, efficient rendering |
-| Multiple High-Quality Voices   | Planned        | Easy voice switching with quality indicators |
-| Smart Bookmarks & Highlights   | Planned        | AI-assisted note taking |
+| Feature                        | Status     | Description |
+|--------------------------------|------------|-----------|
+| Local Kokoro TTS               | ✅ Complete | 82M parameter high-quality browser TTS |
+| Modern React UI                | ✅ Complete | Clean, premium-feeling interface |
+| Gemini Intelligence            | ✅ Partial  | Chapter detection, summaries, smart notes |
+| Progressive Web App            | ✅ Complete | Installable, works offline |
+| Performance Optimized          | ✅ Complete | Memoization, streaming, efficient rendering |
+| Multiple High-Quality Voices   | ✅ Complete | Easy voice switching with quality indicators |
+| Smart Bookmarks & Highlights   | In Progress | AI-assisted note taking |
 
 ---
 
-## Roadmap
+## Roadmap (Updated)
 
-### Phase 0 — Foundation (Current)
-- [x] Modern React 19 + Vite + TypeScript foundation
-- [x] Kokoro-js local TTS integration
-- [x] Google Gemini client setup
-- [x] Testing infrastructure (Vitest)
-- [x] Initial performance work
+### Phase 0 — Foundation (Complete)
+- [x] Modern React 19 + Vite + TypeScript stack
+- [x] Kokoro-js integration (local TTS)
+- [x] Gemini client setup
+- [x] Basic project structure & testing setup
+- [x] Performance baseline work
 
-### Phase 1 — Core Playback Experience
-- [ ] Book library management & import
-- [ ] Beautiful audio player with waveform/progress
-- [ ] Chapter navigation & bookmarking
-- [ ] Playback controls (speed, sleep timer, queue)
-- [ ] Voice selection & quality ratings
+### Phase 1 — Core Playback (Complete)
+- [x] Book import & library management
+- [x] Beautiful audio player with waveform / progress
+- [x] Chapter navigation & bookmarks
+- [x] Playback speed, sleep timer, and queue system
+- [x] Multiple Kokoro voices with easy switching
+- [x] Offline caching of generated audio
 
-### Phase 2 — Intelligence Layer
-- [ ] Automatic chapter detection via Gemini
-- [ ] Book summarization
-- [ ] Contextual highlights & notes
-- [ ] Conversational "Ask the book" mode
+### Phase 2 — Intelligence Layer (In Progress)
+- [x] Gemini-powered chapter detection & segmentation
+- [x] Automatic book summarization
+- [ ] Smart highlights & contextual notes
+- [ ] Voice cloning / style matching via Gemini + Kokoro
+- [ ] "Ask about this book" conversational mode
 
-### Phase 3 — Polish & Experience
-- [ ] Full PWA installability + offline caching
-- [ ] Premium animations & micro-interactions
-- [ ] Accessibility audit & keyboard shortcuts
-- [ ] Refined typography and dark/light themes
+### Phase 3 — Polish & Distribution (In Progress)
+- [x] Premium UI/UX polish (animations, micro-interactions)
+- [x] Full PWA installability + offline mode
+- [x] Dark/light theme with beautiful typography
+- [x] Accessibility audit & keyboard shortcuts
+- [ ] Performance optimizations (streaming TTS, lazy loading)
+- [ ] One-click deployment templates
 
-### Phase 4 — Advanced & Distribution
+### Phase 4 — Advanced Features
 - [ ] EPUB / PDF ingestion pipeline
-- [ ] Optional encrypted cross-device sync
-- [ ] Voice preset sharing
-- [ ] Public demo deployment
+- [ ] Sync across devices (optional encrypted cloud layer)
+- [ ] Voice presets & community voice sharing
+- [ ] Public demo + documentation site
 
 ---
 
@@ -112,7 +105,7 @@ Deliver an **Audible-grade experience** without the recurring cost:
 ## Getting Started
 
 ### Prerequisites
-- Node.js 20+
+- Node.js ≥ 20
 - Gemini API key (optional for Phase 1, recommended for Phase 2)
 
 ### Installation
@@ -129,7 +122,7 @@ Create `.env`:
 GEMINI_API_KEY=your_key_here
 ```
 
-Start development server:
+Start development:
 
 ```bash
 npm run dev

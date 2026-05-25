@@ -1,4 +1,4 @@
-# Screenshot Design Specification
+# AudioSync — Screenshot Design Specification
 
 **Resolution**: 1440px wide (provide 2x versions when possible)
 **Theme**: Dark (#0a0a0f) with amber (#f0a000) + cyan (#00d4ff) accents
@@ -20,3 +20,5 @@
 - Show hover states where relevant
 - Keep text readable
 - Use the same book for continuity across screenshots
+
+**Save in**: `assets/` folder
