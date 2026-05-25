@@ -3,7 +3,7 @@ import AudioVisualizer from './AudioVisualizer';
 import { WaveformCanvas } from './WaveformCanvas';
 import { type DownloadTask, type PlaybackProfile, type QueueItem, queueEnqueue, queueMove, queueRemove, queueShift } from '../lib/parity';
 import { useSettingsStore } from '../stores/settingsStore';
-import { VOICES } from '../lib/tts';
+import { VOICES, VoiceId } from '../lib/tts';
 
 type VoiceItem = {
   id: string;
