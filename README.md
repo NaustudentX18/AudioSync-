@@ -215,7 +215,181 @@ AudioSync-/
 
 ---
 
-## 🗺 Roadmap
+## 📋 Detailed Roadmap
+
+**Research complete:** 5 parallel workstreams (TTS, AI, Player, Library, Tech) produced detailed implementation roadmaps. Full synthesis: [`docs/roadmap-detailed.md`](./docs/roadmap-detailed.md)
+
+---
+
+### Phase 1 — Core Player Foundation (Weeks 1–2) `[P0]`
+
+| # | Feature | Effort |
+|---|---------|--------|
+| 1.1 | Static waveform + canvas rendering | 2–3 days |
+| 1.2 | Chapter navigation UI (list + jump controls) | 4–6 days |
+| 1.3 | Reading position resume (IndexedDB) | 1 day |
+| 1.4 | Sleep timer (duration + chapter-boundary + fade-out) | 4–7 days |
+| 1.5 | Playback speed control (0.5×–3×, smart rewind) | 3–5 days |
+| 1.6 | Media Session API (lock screen / background) | 2–4 days |
+
+**Deliverable:** Functional player with chapter navigation, position resume, and lock-screen controls.
+
+---
+
+### Phase 2 — Bookmark & Interaction Layer (Weeks 3–4) `[P0]`
+
+| # | Feature | Effort |
+|---|---------|--------|
+| 2.1 | Bookmark system (position + note types) | 4–6 days |
+| 2.2 | Quote bookmarks (text extraction from chapter) | 2–3 days |
+| 2.3 | Gesture controls (swipe, double-tap, long-press) | 3–5 days |
+| 2.4 | Visual polish (chapter markers on waveform) | 1 day |
+| 2.5 | Haptic feedback on gesture completion | 4 hours |
+
+**Deliverable:** Full bookmarking and gesture-driven interaction model.
+
+---
+
+### Phase 3 — Library & Import (Weeks 5–8) `[P0]`
+
+| # | Feature | Effort |
+|---|---------|--------|
+| 3.1 | EPUB parsing (`epubix`) + metadata extraction | 2–3 days |
+| 3.2 | Import queue + drag-drop + batch processing | 4–6 days |
+| 3.3 | View modes (grid / list / shelves) + placeholder covers | 3–4 days |
+| 3.4 | Book detail page (metadata edit + cover upload) | 4–6 days |
+| 3.5 | Library search (Fuse.js metadata + FlexSearch content) | 4–5 days |
+| 3.6 | Smart collections (rule engine + CRUD UI) | 4–6 days |
+| 3.7 | MOBI/FB2 support (Calibre backend) | 5–7 days |
+| 3.8 | PDF support (PyMuPDF) | 6–8 days |
+
+**Deliverable:** Full library management with import, browsing, search, and smart collections.
+
+---
+
+### Phase 4 — Polish & Accessibility (Weeks 9–11) `[P1]`
+
+| # | Feature | Effort |
+|---|---------|--------|
+| 4.1 | WCAG 2.2 AA compliance pass | 7–10 days |
+| 4.2 | Live audio visualizations (optional toggle) | 3–5 days |
+| 4.3 | AI chapter detection (Gemini fallback) | 2–3 days |
+| 4.4 | Cross-device sync (Audiobookshelf integration) | 3–7 days |
+| 4.5 | Speed ramping (gradual at chapter boundary) | 2 days |
+| 4.6 | Reading stats + streaks | 5–7 days |
+| 4.7 | OPDS + JSON + PNG export | 4–6 days |
+
+**Deliverable:** Accessible, polished, social-ready app.
+
+---
+
+### Phase 5 — Infrastructure & Hardening (Weeks 12–13) `[P1]`
+
+| # | Feature | Effort |
+|---|---------|--------|
+| 5.1 | Performance optimization (virtualization, memo, code split) | 1–2 weeks |
+| 5.2 | PWA offline + Background Sync | 1 week |
+| 5.3 | IndexedDB schema finalization (Dexie.js) | 1 week |
+| 5.4 | Web Vitals monitoring | 1 day |
+| 5.5 | i18n (Paraglide + RTL) | 1 week |
+| 5.6 | Error monitoring (Sentry) + structured logging | 3–4 days |
+| 5.7 | Bundle optimization (<300 KB gzip) | 1–2 days |
+| 5.8 | Service worker update + versioning | 1 day |
+| 5.9 | Security hardening (CSP, sanitization, encrypted storage) | 2–3 days |
+| 5.10 | CI/CD (GitHub Actions) + E2E tests (Playwright) | 3–5 days |
+| 5.11 | Onboarding flow (react-joyride + install prompt) | 1 week |
+
+**Deliverable:** Production-grade, secure, measurable, deployable.
+
+---
+
+### Effort Summary
+
+| Phase | Features | Effort (weeks) | Cumulative |
+|-------|----------|---------------|------------|
+| Phase 1 — Core Player | 6 | 2–3 | 2–3 |
+| Phase 2 — Bookmarks | 5 | 2 | 4–5 |
+| Phase 3 — Library | 8 | 5–7 | 9–12 |
+| Phase 4 — Polish | 7 | 3–5 | 12–17 |
+| Phase 5 — Infra | 11 | 2–3 | **14–20** |
+
+**With 2 developers in parallel: ~13 weeks to v1.0**
+
+---
+
+### Research Streams
+
+| Stream | File | Topics |
+|--------|------|--------|
+| Advanced TTS | [`docs/research/stream-1-tts.md`](./docs/research/stream-1-tts.md) | Kokoro.js, voice cloning, SSML, multi-speaker, emotion, phoneme timing, voice pack management |
+| AI Intelligence | [`docs/research/stream-2-ai.md`](./docs/research/stream-2-ai.md) | Chapter detection, summarization, NER, vocabulary scoring, quiz generation, quote extraction, sentiment analysis, RAG |
+| Player Experience | [`docs/research/stream-3-player.md`](./docs/research/stream-3-player.md) | Waveform, chapters, bookmarks, gestures, accessibility, sleep timer, visualizations, background playback |
+| Library & Management | [`docs/research/stream-4-library.md`](./docs/research/stream-4-library.md) | EPUB/MOBI/PDF parsing, view modes, smart collections, reading stats, OPDS export, import queue, search |
+| Tech & Polish | [`docs/research/stream-5-tech.md`](./docs/research/stream-5-tech.md) | Performance, PWA, IndexedDB, Web Vitals, i18n, Sentry, bundle optimization, CI/CD |
+
+---
+
+### Key Differentiators vs Competitors
+
+| Feature | AudioSync | BookPlayer | Smart Audiobook Player | Audiobookshelf |
+|---------|-----------|------------|----------------------|----------------|
+| TTS-native quote bookmarks | ✅ **Only** | ❌ | ❌ | ❌ |
+| AI chapter detection | ✅ (Gemini) | ❌ | ❌ | ❌ |
+| Voice cloning | ✅ Target | ❌ | ❌ | ❌ |
+| Fully open-source PWA | ✅ | iOS only | Android only | ✅ |
+| WCAG 2.2 AA | ✅ Target | ⚠️ Partial | ⚠️ Partial | ⚠️ Partial |
+
+---
+
+### Open Questions
+
+| ID | Question | Recommendation |
+|----|----------|---------------|
+| Q1 | Waveform: Web Worker or server-side? | Web Worker initially |
+| Q2 | Quote bookmark precision: phoneme or MFA? | Graceful degradation regardless |
+| Q3 | Sleep timer: chapter end, boundary, or both? | Both as presets |
+| Q4 | Smart rewind default: 10 seconds? | Confirm (industry standard) |
+| Q5 | Cloud sync: opt-in or opt-out? | Opt-in (privacy-first) |
+| Q6 | Deployment: PWA, Electron, or both? | PWA first; Electron later if requested |
+
+---
+
+### Success Metrics
+
+| Metric | Target |
+|--------|--------|
+| Lighthouse Performance | ≥ 90 |
+| Lighthouse Accessibility | ≥ 95 |
+| Bundle size (gzip) | < 300 KB |
+| LCP | ≤ 2.5 s on 3G |
+| INP | ≤ 200 ms |
+| CLS | ≤ 0.1 |
+| WCAG 2.2 AA | All critical paths pass |
+| Test coverage | ≥ 70% |
+
+---
+
+### Top Risks
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|------------|--------|------------|
+| Waveform pre-computation blocks main thread | Medium | Medium | Web Worker |
+| M4B chapter parsing fails | High | Low | AI fallback |
+| iOS background audio permission denied | Medium | High | Request on first interaction |
+| Media Session API inconsistent | Medium | Medium | Feature-detect + graceful degradation |
+| Phoneme alignment precision insufficient | Medium | Medium | MFA backend; graceful degradation |
+
+---
+
+### Detailed Research
+
+For full implementation details, code snippets, complexity ratings, and effort estimates, see:
+- [`docs/roadmap-detailed.md`](./docs/roadmap-detailed.md) — master synthesis (48 KB)
+- [`docs/research/`](./docs/research/) — 5 individual workstream documents
+
+---
+
+## 🗺 Roadmap (Legacy)
 
 | Milestone | Status |
 |-----------|--------|
