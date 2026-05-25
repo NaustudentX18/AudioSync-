@@ -1,50 +1,36 @@
 # AudioSync — Live Task Board
 
 **Last Updated**: Just now
-**Status**: Phase 0 — Foundation
+**Status**: Phase 1 — Core Playback (In Progress)
 
-## Phase 0 — Foundation (Current)
+## Phase 0 — Foundation ✅ COMPLETE
+- [x] AGENTS.md + TODO.md
+- [x] .github templates
+- [x] docs/architecture.md
+- [x] src/lib/library.ts
+- [x] src/lib/tts.ts
+- [x] src/lib/gemini.ts
+- [x] src/App.tsx + Player component
 
-- [ ] Create AGENTS.md (swarm rules)
-- [ ] Create TODO.md (this file)
-- [ ] Create .github/ISSUE_TEMPLATE/bug_report.md
-- [ ] Create .github/ISSUE_TEMPLATE/feature_request.md
-- [ ] Create .github/PULL_REQUEST_TEMPLATE.md
-- [ ] Create docs/architecture.md
-- [ ] Scaffold src/lib/library.ts
-- [ ] Scaffold src/lib/tts.ts (Kokoro wrapper)
-
-## Phase 1 — Core Playback
-
-- [ ] Book import + metadata system
-- [ ] Audio player UI component
-- [ ] Playback state management
-- [ ] Performance baseline
+## Phase 1 — Core Playback (Current Focus)
+- [x] Basic audio player with Kokoro TTS playback
+- [x] Library management + file import
+- [ ] Real audio playback (Web Audio API + streaming)
+- [ ] Chapter navigation
+- [ ] Playback speed / sleep timer
+- [ ] State management (Zustand or Context)
 
 ## Phase 2 — Intelligence Layer
-
 - [ ] Chapter detection (Gemini)
-- [ ] Book summarization
+- [ ] Book summarization UI
 - [ ] Smart bookmarks
-- [ ] Conversational mode
 
 ## Phase 3 — Polish & Visuals
-
 - [ ] PWA + offline support
 - [ ] Theme system
-- [ ] Animations
-- [ ] Hero banner (`assets/banner.png`)
-- [ ] Demo video
-- [ ] Screenshots (5 shots)
+- [ ] Banner + demo video + screenshots
 
 ## Phase 4 — Testing & Release
-
 - [ ] Test suite
-- [ ] Final README polish
+- [ ] Final README + docs
 - [ ] Deployment templates
-- [ ] Release checklist
-
----
-
-**Current Focus**: Phase 0 tasks
-**Next Agent Task**: Claim the next unclaimed item above
