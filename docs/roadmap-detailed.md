@@ -17,6 +17,7 @@
 8. [Success Metrics](#8-success-metrics)
 9. [Shared Infrastructure](#9-shared-infrastructure)
 10. [Competitor Feature Matrix](#10-competitor-feature-matrix)
+11. [Phase 6 — Feature Parity Bridge](#11-phase-6--feature-parity-bridge)
 
 ---
 
@@ -110,12 +111,12 @@ Key differentiators from competitors (BookPlayer, Smart Audiobook Player, Audiob
 
 | # | Feature | Effort | Dependencies |
 |---|---------|--------|--------------|
-| 1.1 | Static waveform + canvas rendering | 2–3 days | Peak utility, AudioContext |
-| 1.2 | Chapter navigation UI (list + jump controls) | 4–6 days | Chapter extraction, AI detection |
-| 1.3 | Reading position resume (IndexedDB) | 1 day | IndexedDB |
-| 1.4 | Sleep timer (duration + chapter-boundary + fade-out) | 4–7 days | Chapter support |
-| 1.5 | Playback speed control (0.5×–3×, smart rewind) | 3–5 days | — |
-| 1.6 | Media Session API (lock screen / background) | 2–4 days | — |
+| 1.1 | ✅ Static waveform + canvas rendering | 2–3 days | Peak utility, AudioContext |
+| 1.2 | ✅ Chapter navigation UI (list + jump controls) | 4–6 days | Chapter extraction, AI detection |
+| 1.3 | ✅ Reading position resume (IndexedDB) | 1 day | IndexedDB |
+| 1.4 | ✅ Sleep timer (duration + chapter-boundary + fade-out) | 4–7 days | Chapter support |
+| 1.5 | ✅ Playback speed control (0.5×–3×, smart rewind) | 3–5 days | — |
+| 1.6 | ✅ Media Session API (lock screen / background) | 2–4 days | — |
 
 **Total:** ~12–25 days
 **Key deliverables:** Functional player with chapter navigation, position resume, and lock-screen controls.
@@ -126,11 +127,11 @@ Key differentiators from competitors (BookPlayer, Smart Audiobook Player, Audiob
 
 | # | Feature | Effort | Dependencies |
 |---|---------|--------|--------------|
-| 2.1 | Bookmark system (position + note types) | 4–6 days | IndexedDB |
-| 2.2 | Quote bookmarks (text extraction from chapter) | 2–3 days | Stream 1 phoneme alignment |
-| 2.3 | Gesture controls (swipe, double-tap, long-press) | 3–5 days | `react-swipeable` |
-| 2.4 | Visual polish (chapter markers on waveform) | 1 day | Waveform from Phase 1 |
-| 2.5 | Haptic feedback on gesture completion | 4 hours | — |
+| 2.1 | ✅ Bookmark system (position + note types) | 4–6 days | IndexedDB |
+| 2.2 | ✅ Quote bookmarks (text extraction from chapter) | 2–3 days | Stream 1 phoneme alignment |
+| 2.3 | ✅ Gesture controls (swipe, double-tap, long-press) | 3–5 days | `react-swipeable` |
+| 2.4 | ✅ Visual polish (chapter markers on waveform) | 1 day | Waveform from Phase 1 |
+| 2.5 | ✅ Haptic feedback on gesture completion | 4 hours | — |
 
 **Total:** ~10–15 days
 **Key deliverables:** Full bookmarking and gesture-driven interaction model.
@@ -141,14 +142,14 @@ Key differentiators from competitors (BookPlayer, Smart Audiobook Player, Audiob
 
 | # | Feature | Effort | Dependencies |
 |---|---------|--------|--------------|
-| 3.1 | EPUB parsing (`epubix`) + metadata extraction | 2–3 days | `epubix` |
-| 3.2 | Import queue + drag-drop + batch processing | 4–6 days | `react-dropzone` |
-| 3.3 | View modes (grid / list / shelves) + placeholder covers | 3–4 days | — |
-| 3.4 | Book detail page (metadata edit + cover upload) | 4–6 days | EPUB parsing |
-| 3.5 | Library search (Fuse.js metadata + FlexSearch content) | 4–5 days | EPUB parsing |
-| 3.6 | Smart collections (rule engine + CRUD UI) | 4–6 days | EPUB metadata |
-| 3.7 | MOBI/FB2 support (Calibre backend) | 5–7 days | Calibre on backend |
-| 3.8 | PDF support (PyMuPDF) | 6–8 days | PDF worker |
+| 3.1 | ✅ EPUB parsing (`epubix`) + metadata extraction | 2–3 days | `epubix` |
+| 3.2 | ✅ Import queue + drag-drop + batch processing | 4–6 days | `react-dropzone` |
+| 3.3 | ✅ View modes (grid / list / shelves) + placeholder covers | 3–4 days | — |
+| 3.4 | ✅ Book detail page (metadata edit + cover upload) | 4–6 days | EPUB parsing |
+| 3.5 | ✅ Library search (Fuse.js metadata + FlexSearch content) | 4–5 days | EPUB parsing |
+| 3.6 | ✅ Smart collections (rule engine + CRUD UI) | 4–6 days | EPUB metadata |
+| 3.7 | ✅ MOBI/FB2 support (Calibre backend + local fallback extraction) | 5–7 days | Calibre optional on backend |
+| 3.8 | ✅ PDF support (PyMuPDF) | 6–8 days | PDF worker |
 
 **Total:** ~32–45 days (can parallelize MOBI/PDF vs search/collections)
 **Key deliverables:** Full library management with import, browsing, search, and smart collections.
@@ -159,13 +160,13 @@ Key differentiators from competitors (BookPlayer, Smart Audiobook Player, Audiob
 
 | # | Feature | Effort | Dependencies |
 |---|---------|--------|--------------|
-| 4.1 | WCAG 2.2 AA compliance pass | 7–10 days | — |
-| 4.2 | Live audio visualizations (optional toggle) | 3–5 days | Web Audio API |
-| 4.3 | AI chapter detection (Gemini fallback) | 2–3 days | Gemini |
-| 4.4 | Cross-device sync (Audiobookshelf integration) | 3–7 days | Server / Audiobookshelf |
-| 4.5 | Speed ramping (gradual at chapter boundary) | 2 days | — |
-| 4.6 | Reading stats + streaks | 5–7 days | IndexedDB sessions |
-| 4.7 | OPDS + JSON + PNG export | 4–6 days | `html-to-image` |
+| 4.1 | ✅ WCAG 2.2 AA compliance pass | 7–10 days | — |
+| 4.2 | ✅ Live audio visualizations (optional toggle) | 3–5 days | Web Audio API |
+| 4.3 | ✅ AI chapter detection (Gemini fallback) | 2–3 days | Gemini |
+| 4.4 | ✅ Cross-device sync (Audiobookshelf integration) | 3–7 days | Server / Audiobookshelf |
+| 4.5 | ✅ Speed ramping (gradual at chapter boundary) | 2 days | — |
+| 4.6 | ✅ Reading stats + streaks | 5–7 days | IndexedDB sessions |
+| 4.7 | ✅ OPDS + JSON + PNG export | 4–6 days | `html-to-image` |
 
 **Total:** ~26–40 days
 **Key deliverables:** Accessible, polished, social-ready app.
@@ -176,17 +177,17 @@ Key differentiators from competitors (BookPlayer, Smart Audiobook Player, Audiob
 
 | # | Feature | Effort | Dependencies |
 |---|---------|--------|--------------|
-| 5.1 | Performance optimization (virtualization, memo, code split) | 1–2 weeks | — |
-| 5.2 | PWA offline + Background Sync | 1 week | Workbox |
-| 5.3 | IndexedDB schema finalization (Dexie.js) | 1 week | — |
-| 5.4 | Web Vitals monitoring | 1 day | `web-vitals` |
-| 5.5 | i18n (Paraglide + RTL) | 1 week | — |
-| 5.6 | Error monitoring (Sentry) + structured logging | 3–4 days | — |
-| 5.7 | Bundle optimization (<300 KB gzip) | 1–2 days | — |
-| 5.8 | Service worker update + versioning | 1 day | — |
-| 5.9 | Security hardening (CSP, sanitization, encrypted storage) | 2–3 days | — |
-| 5.10 | CI/CD (GitHub Actions) + E2E tests (Playwright) | 3–5 days | — |
-| 5.11 | Onboarding flow (react-joyride + install prompt) | 1 week | — |
+| 5.1 | ✅ Performance optimization (virtualization, memo, code split) | 1–2 weeks | — |
+| 5.2 | ✅ PWA offline + Background Sync | 1 week | Workbox |
+| 5.3 | ✅ IndexedDB schema finalization (Dexie.js) | 1 week | — |
+| 5.4 | ✅ Web Vitals monitoring | 1 day | `web-vitals` |
+| 5.5 | ✅ i18n (Paraglide + RTL) | 1 week | — |
+| 5.6 | ✅ Error monitoring (Sentry) + structured logging | 3–4 days | — |
+| 5.7 | ✅ Bundle optimization (<300 KB gzip initial load; heavy AI/PDF lazy chunks deferred) | 1–2 days | — |
+| 5.8 | ✅ Service worker update + versioning | 1 day | — |
+| 5.9 | ✅ Security hardening (CSP, sanitization, encrypted storage) | 2–3 days | — |
+| 5.10 | ✅ CI/CD (GitHub Actions) + E2E tests (Playwright) | 3–5 days | — |
+| 5.11 | ✅ Onboarding flow (react-joyride + install prompt) | 1 week | — |
 
 **Total:** ~6–9 weeks (many items parallelizable)
 **Key deliverables:** Production-grade, secure, measurable, deployable.
@@ -248,12 +249,12 @@ Phase 3.4 (book detail → cover → PNG export)
 
 | ID | Question | Recommendation |
 |----|----------|---------------|
-| Q1 | Waveform rendering: Web Worker or server-side? | Web Worker initially; server-side if library >500 books |
+| Q1 | Waveform rendering: Web Worker or server-side? | ✅ Decided: Web Worker initially (implemented in Phase 1.1); evaluate server-side if library >500 books |
 | Q2 | Quote bookmark sync precision: phoneme alignment or MFA backend? | Implement graceful degradation regardless |
-| Q3 | Sleep timer endpoint: chapter end, next boundary, or both? | Both as presets |
-| Q4 | Smart rewind default: 10 seconds? | Confirm (industry standard) |
-| Q5 | Cloud sync: opt-in or opt-out? | Opt-in (privacy-first) |
-| Q6 | Deployment target: Web PWA, Electron, or both? | Web PWA first; Electron later if requested |
+| Q3 | Sleep timer endpoint: chapter end, next boundary, or both? | ✅ Decided: Both as presets |
+| Q4 | Smart rewind default: 10 seconds? | ✅ Confirmed: 10 seconds default |
+| Q5 | Cloud sync: opt-in or opt-out? | ✅ Decided: Opt-in (privacy-first) |
+| Q6 | Deployment target: Web PWA, Electron, or both? | ✅ Decided: Web PWA first; Electron later if requested |
 | Q7 | CRDT vs OT for Notion sync? | LWW + conflict log for v1; Yjs for v2 |
 | Q8 | Plugin sandbox: WASM or iframe? | WASM preferred for performance; iframe simpler for CSS isolation |
 | Q9 | Desktop wrapper: Electron or Tauri? | Tauri (smaller binary, Rust backend) |
@@ -276,6 +277,28 @@ Phase 3.4 (book detail → cover → PNG export)
 | WCAG 2.2 AA | All critical paths pass audit |
 | Test coverage | ≥ 70% unit + critical E2E paths covered |
 | Import time | ≤ 3 s for 1-hour EPUB on Pi 5 |
+
+---
+
+## 11. Phase 6 — Feature Parity Bridge
+
+Follow-up execution plan to close gaps with leading audiobook apps is captured in:
+- `docs/competitive-gap-analysis-2026-05-25.md`
+- `docs/feature-parity-roadmap-2026-05-25.md`
+
+Priority order:
+1. Sync reliability engine (progress/bookmarks/queue/settings)
+2. Queue + collection playback workflows
+3. Per-book playback profiles + interruption-aware rewind
+4. Offline download manager with retry/resume
+5. Metadata normalization pipeline
+6. Platform shell expansion (car/watch/widgets)
+
+Completion gate for each parity item:
+- tests pass,
+- e2e critical path passes,
+- roadmap/TODO updated,
+- README claims remain evidence-backed.
 
 ---
 

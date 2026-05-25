@@ -14,26 +14,58 @@ export default defineConfig({
         theme_color: '#000000',
         background_color: '#000000',
         icons: [
-          {
-            src: 'pwa-192x192.png',
-            sizes: '192x192',
-            type: 'image/png'
-          },
-          {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png'
-          }
-        ]
+          { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
+          { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png' },
+        ],
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
-        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB
-      }
-    })
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+        cleanupOutdatedCaches: true,
+        navigateFallback: '/index.html',
+        runtimeCaching: [
+          {
+            urlPattern: ({ request }) => request.destination === 'document',
+            handler: 'NetworkFirst',
+            options: { cacheName: 'pages' },
+          },
+          {
+            urlPattern: ({ request }) => ['script', 'style', 'font'].includes(request.destination),
+            handler: 'StaleWhileRevalidate',
+            options: { cacheName: 'assets' },
+          },
+          {
+            urlPattern: ({ url }) => url.pathname.startsWith('/api/sync/'),
+            handler: 'NetworkOnly',
+            method: 'POST',
+            options: {
+              backgroundSync: {
+                name: 'audiosync-sync-queue',
+                options: {
+                  maxRetentionTime: 24 * 60,
+                },
+              },
+            },
+          },
+        ],
+      },
+    }),
   ],
+  build: {
+    sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ['react', 'react-dom'],
+          ai: ['@google/genai', 'kokoro-js'],
+          search: ['fuse.js', 'flexsearch'],
+          upload: ['react-dropzone', 'jszip', 'fast-xml-parser'],
+        },
+      },
+    },
+  },
   server: {
     port: 5173,
-    open: true
-  }
+    open: true,
+  },
 });

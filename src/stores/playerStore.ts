@@ -1,14 +1,15 @@
 import { create } from 'zustand';
+import { generateSpeech, type VoiceId } from '../lib/tts';
 
 interface PlayerState {
   isPlaying: boolean;
-  currentBook: any | null;
+  currentBook: unknown | null;
   currentText: string;
-  voice: string;
+  voice: VoiceId;
   speed: number;
   setIsPlaying: (playing: boolean) => void;
   setCurrentText: (text: string) => void;
-  setVoice: (voice: string) => void;
+  setVoice: (voice: VoiceId) => void;
   setSpeed: (speed: number) => void;
   playText: (text: string) => Promise<void>;
 }
@@ -16,8 +17,8 @@ interface PlayerState {
 export const usePlayerStore = create<PlayerState>((set, get) => ({
   isPlaying: false,
   currentBook: null,
-  currentText: "This is a test of AudioSync local TTS.",
-  voice: "af_heart",
+  currentText: 'This is a test of AudioSync local TTS.',
+  voice: 'af_heart',
   speed: 1.0,
 
   setIsPlaying: (playing) => set({ isPlaying: playing }),
@@ -30,18 +31,24 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
     set({ isPlaying: true });
 
     try {
-      const audioBuffer = await generateSpeech(text, voice);
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const wavBytes = await generateSpeech(text, voice);
+      const audioContext = new AudioContext();
+      const arrayBuffer = wavBytes.buffer.slice(
+        wavBytes.byteOffset,
+        wavBytes.byteOffset + wavBytes.byteLength,
+      ) as ArrayBuffer;
+      const decoded = await audioContext.decodeAudioData(arrayBuffer);
       const audioSource = audioContext.createBufferSource();
-      audioSource.buffer = audioBuffer;
+      audioSource.buffer = decoded;
       audioSource.connect(audioContext.destination);
       audioSource.start();
-      
+
       audioSource.onended = () => {
         set({ isPlaying: false });
+        void audioContext.close();
       };
     } catch (error) {
-      console.error("Playback error:", error);
+      console.error('Playback error:', error);
       set({ isPlaying: false });
     }
   },
