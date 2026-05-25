@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { library } from '../src/lib/library';
+import { library } from '../lib/library';
 
 describe('AudioSync Core', () => {
   it('should add a book to the library', async () => {

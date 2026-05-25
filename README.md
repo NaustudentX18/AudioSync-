@@ -77,9 +77,10 @@
 - Keep the community updated via GitHub Discussions or Releases
 - Visual assets (banner, demo, screenshots) will be added to `assets/` folder
 
-**Current Status (May 25, 2026)**: Phase 1 complete. Phase 2 and 3 in progress. The app is functional and can be run with `npm run dev`.
+**Current Status (May 25, 2026)**: Phase 1 complete. Phase 6 (Sync Layer) in progress — retry queue with localStorage persistence, conflict viewer with export/clear, and per-field conflict resolution built. Phase 2 and 3 remain open. App runs with `npm run dev`.
 
-**Next Milestone**: Finish Phase 2 intelligence features and create visual assets to make the GitHub landing page professional-grade.
+
+**Next Milestone**: Finish Phase 2 intelligence features and Phase 6 sync backend integration.
 
 **Visual Assets Plan**
 - Hero banner: Dark cinematic tech aesthetic with waveform + open book (use the prompt in `assets/banner-prompt.md`)

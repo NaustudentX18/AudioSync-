@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Player } from './components/Player';
+import SyncPanel from './components/SyncPanel';
 import { library, Book } from './lib/library';
 
 export default function App() {
@@ -84,6 +85,10 @@ export default function App() {
             <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
             <span className="text-xs text-zinc-400 font-mono">{status}</span>
           </div>
+        </div>
+
+        <div className="mt-8">
+          <SyncPanel />
         </div>
       </div>
     </div>
