@@ -110,7 +110,7 @@
 | 6.3 | Per-book playback profiles + interruption-aware rewind | P0 | ✅ Baseline done (Hermes, 2026-05-25: persisted profile + dynamic rewind on resume) |
 | 6.4 | Offline download manager (retry/resume/storage controls) | P1 | ✅ Baseline done (Hermes, 2026-05-25: offline export task queue/state transitions scaffold) |
 | 6.5 | Metadata normalization (series/narrator/chapter edge cases) | P1 | ✅ Baseline done (Hermes, 2026-05-25: normalization heuristics + chapter fallback + tests) |
-| 6.6 | Platform shell expansion (car/watch/widgets) | P1 | 🟡 In progress (Hermes, 2026-05-25: execution plan captured in docs/platform-shell-expansion-plan-2026-05-25.md) |
+| 6.6 | Platform shell expansion (car/watch/widgets) | P1 | ✅ Baseline done (Hermes, 2026-05-25: media-session next/prev/stop handlers, quick-action hooks, PWA shortcuts, capability surfacing) |
 
 **Planning docs:** `docs/competitive-gap-analysis-2026-05-25.md`, `docs/feature-parity-roadmap-2026-05-25.md`
 
@@ -225,3 +225,4 @@
 - 2026-05-25 (Hermes): Phase 6 execution pass: added sync reliability primitives (`src/lib/parity.ts`), App sync conflict/retry scaffolding, player queue workflows, persisted playback profiles with interruption-aware rewind, offline export task queue scaffold, and parity regression tests.
 - 2026-05-25 (Hermes): Phase 6.5 pass: added metadata normalization heuristics for series/narrator tags + chapter fallback normalization in `src/lib/library.ts`, with regression test coverage.
 - 2026-05-25 (Hermes): Phase 6.6 pass: added platform shell expansion execution plan (`docs/platform-shell-expansion-plan-2026-05-25.md`) covering car/wearable/widget tracks and exit criteria.
+- 2026-05-25 (Hermes): Phase 6.6 runtime pass: implemented quick-action event hooks (`play-next`, `bookmark`, `rewind`), extended Media Session handlers (`nexttrack`, `previoustrack`, `stop`), surfaced platform capabilities in UI, and added PWA manifest shortcuts via `vite.config.ts`.

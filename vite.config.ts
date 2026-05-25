@@ -17,6 +17,26 @@ export default defineConfig({
           { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
           { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png' },
         ],
+        shortcuts: [
+          {
+            name: 'Play Next',
+            short_name: 'Next',
+            description: 'Jump to the next queued chapter',
+            url: '/?action=play-next',
+          },
+          {
+            name: 'Quick Bookmark',
+            short_name: 'Bookmark',
+            description: 'Add a position bookmark',
+            url: '/?action=bookmark',
+          },
+          {
+            name: 'Smart Rewind',
+            short_name: 'Rewind',
+            description: 'Rewind using smart rewind setting',
+            url: '/?action=rewind',
+          },
+        ],
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],

@@ -97,3 +97,19 @@ export interface DownloadTask {
   progress: number;
   updatedAt: string;
 }
+
+export interface PlatformShellCapabilities {
+  mediaSession: boolean;
+  vibration: boolean;
+  serviceWorker: boolean;
+  touch: boolean;
+}
+
+export function detectPlatformShellCapabilities(win: Window = window): PlatformShellCapabilities {
+  return {
+    mediaSession: 'mediaSession' in navigator,
+    vibration: 'vibrate' in navigator,
+    serviceWorker: 'serviceWorker' in navigator,
+    touch: 'ontouchstart' in win || navigator.maxTouchPoints > 0,
+  };
+}

@@ -22,6 +22,7 @@ const VOICES: VoiceId[] = [
 
 type SleepTimerMode = 'off' | 'duration' | 'chapter-end';
 type BookmarkType = 'position' | 'note' | 'quote';
+type QuickAction = 'play-next' | 'bookmark' | 'rewind';
 
 interface BookmarkItem {
   id: string;
@@ -205,6 +206,18 @@ export function Player() {
     return () => window.removeEventListener('keydown', handler);
   }, [smartRewindSeconds]);
 
+  useEffect(() => {
+    const handler = (event: Event) => {
+      const custom = event as CustomEvent<QuickAction>;
+      const action = custom.detail;
+      if (action === 'play-next') playNextFromQueue();
+      if (action === 'bookmark') addBookmark('position');
+      if (action === 'rewind') rewindSmart();
+    };
+    window.addEventListener('audiosync:quick-action', handler);
+    return () => window.removeEventListener('audiosync:quick-action', handler);
+  });
+
   const vibrate = (ms = 15) => {
     if ('vibrate' in navigator) navigator.vibrate(ms);
   };
@@ -243,6 +256,13 @@ export function Player() {
     });
     navigator.mediaSession.setActionHandler('seekbackward', () => rewindSmart());
     navigator.mediaSession.setActionHandler('seekforward', () => seekBy(smartRewindSeconds));
+    navigator.mediaSession.setActionHandler('nexttrack', () => playNextFromQueue());
+    navigator.mediaSession.setActionHandler('previoustrack', () => rewindSmart());
+    navigator.mediaSession.setActionHandler('stop', () => {
+      audioRef.current?.pause();
+      setIsPlaying(false);
+      setStatus('Stopped');
+    });
   };
 
   const saveResumePosition = (seconds: number) => {

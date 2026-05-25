@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { library } from '../lib/library';
-import { mergeLww, queueEnqueue, queueMove, queueShift, scheduleRetry } from '../lib/parity';
+import { detectPlatformShellCapabilities, mergeLww, queueEnqueue, queueMove, queueShift, scheduleRetry } from '../lib/parity';
 
 describe('AudioSync Core', () => {
   it('should add a book to the library', async () => {
@@ -68,5 +68,13 @@ describe('AudioSync Core', () => {
     expect(book.title).toContain('stormlight archive');
     expect(book.tags?.some((t) => t.startsWith('series:'))).toBe(true);
     expect(book.tags?.some((t) => t.startsWith('narrator:'))).toBe(true);
+  });
+
+  it('should detect platform shell capabilities shape', () => {
+    const caps = detectPlatformShellCapabilities(window);
+    expect(typeof caps.mediaSession).toBe('boolean');
+    expect(typeof caps.serviceWorker).toBe('boolean');
+    expect(typeof caps.touch).toBe('boolean');
+    expect(typeof caps.vibration).toBe('boolean');
   });
 });

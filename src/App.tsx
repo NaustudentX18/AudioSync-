@@ -2,7 +2,7 @@ import React, { Suspense, lazy, useCallback, useEffect, useMemo, useState } from
 import { useDropzone } from 'react-dropzone';
 import { library, Book, SmartCollection } from './lib/library';
 import { getEncryptedItem, setEncryptedItem } from './lib/secureStorage';
-import { mergeLww, scheduleRetry, type RetryJob, type SyncEnvelope } from './lib/parity';
+import { detectPlatformShellCapabilities, mergeLww, scheduleRetry, type PlatformShellCapabilities, type RetryJob, type SyncEnvelope } from './lib/parity';
 
 const Player = lazy(() => import('./components/Player').then((m) => ({ default: m.Player })));
 
@@ -37,6 +37,7 @@ export default function App() {
   const [lang, setLang] = useState<Lang>((localStorage.getItem('audiosync_lang') as Lang) || 'en');
   const [showOnboarding, setShowOnboarding] = useState(localStorage.getItem('audiosync_onboarded') !== 'true');
   const [capabilities, setCapabilities] = useState<{['ebook-convert']?: boolean; ['pdftotext']?: boolean}>({});
+  const [platformCaps, setPlatformCaps] = useState<PlatformShellCapabilities | null>(null);
 
   useEffect(() => {
     void (async () => {
@@ -49,7 +50,16 @@ export default function App() {
         const cap = await capRes.json();
         setCapabilities(cap.tools || {});
       }
+      setPlatformCaps(detectPlatformShellCapabilities());
     })();
+  }, []);
+
+  useEffect(() => {
+    const action = new URLSearchParams(window.location.search).get('action');
+    if (action === 'play-next' || action === 'bookmark' || action === 'rewind') {
+      window.dispatchEvent(new CustomEvent('audiosync:quick-action', { detail: action }));
+      setStatus(`Quick action: ${action}`);
+    }
   }, []);
 
   const selectedBook = useMemo(() => books.find((book) => book.id === selectedBookId) ?? null, [books, selectedBookId]);
@@ -277,6 +287,10 @@ export default function App() {
           <span>PDF extract: {capabilities['pdftotext'] ? 'available' : 'missing'}</span>
           <span>Stats: {Math.floor(listenedSeconds / 60)} min listened</span><span>Streak: {streakDays} day(s)</span>
           <button onClick={exportJson} className="underline">Export JSON</button><button onClick={exportOpds} className="underline">Export OPDS</button><button onClick={exportPngCard} className="underline">Export PNG</button><button onClick={() => void exportSyncBundle()} className="underline">Sync Export</button><button onClick={() => void syncToAudiobookshelf()} className="underline">Audiobookshelf Sync</button>
+          <button onClick={() => window.dispatchEvent(new CustomEvent('audiosync:quick-action', { detail: 'play-next' }))} className="underline">Quick: Next</button>
+          <button onClick={() => window.dispatchEvent(new CustomEvent('audiosync:quick-action', { detail: 'bookmark' }))} className="underline">Quick: Bookmark</button>
+          <button onClick={() => window.dispatchEvent(new CustomEvent('audiosync:quick-action', { detail: 'rewind' }))} className="underline">Quick: Rewind</button>
+          {platformCaps && <span>Platform: media={platformCaps.mediaSession ? 'yes' : 'no'} · touch={platformCaps.touch ? 'yes' : 'no'} · sw={platformCaps.serviceWorker ? 'yes' : 'no'}</span>}
         </div>
 
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
