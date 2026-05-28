@@ -1,5 +1,7 @@
 export type VoiceEngine = "elevenlabs" | "openai" | "webspeech" | "kokoro" | "stepfun";
 
+export type SortOption = "recent" | "alphabetical" | "progress";
+
 export interface BookItem {
   id: string;
   title: string;
