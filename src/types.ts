@@ -33,3 +33,19 @@ export interface UserSettings {
   stepfunModel: string; // 'stepaudio-2.5-tts' | 'step-tts-2' | 'step-tts-mini'
   ttsProvider: 'kokoro' | 'openai' | 'stepfun';
 }
+
+export type ExportedData = {
+  books: ExportedBookFull[];
+};
+
+export type ExportedBookFull = {
+  id: string;
+  title: string;
+  author: string | null;
+  paragraphs: ExportedBookParagraph[];
+};
+
+export type ExportedBookParagraph = {
+  index: number;
+  text: string;
+};
