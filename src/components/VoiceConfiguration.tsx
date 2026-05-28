@@ -87,9 +87,10 @@ export default function VoiceConfiguration({ settings, onUpdateSettings }: Voice
         audio.play();
         audio.onended = () => setTestingModelId(null);
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      setTestPlayError(err.message || "Failed voice playback test.");
+      const errorMessage = err instanceof Error ? err.message : "Failed voice playback test.";
+      setTestPlayError(errorMessage);
       setTestingModelId(null);
     }
   };

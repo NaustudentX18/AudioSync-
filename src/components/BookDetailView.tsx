@@ -204,9 +204,10 @@ export default function BookDetailView({
           setIsPlaying(false);
         };
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      setAudioError(err.message || "Failed voice synthesizer process.");
+      const errorMessage = err instanceof Error ? err.message : "Failed voice synthesizer process.";
+      setAudioError(errorMessage);
       setIsLoadingSpeech(false);
       setIsPlaying(false);
     }
