@@ -1,0 +1,64 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build production bundle
+        run: npm run build
+
+      - name: Package release
+        run: |
+          tar -czf audiosync-${{ github.ref_name }}.tar.gz -C dist .
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            audiosync-${{ github.ref_name }}.tar.gz
+            assets/demo.mp4
+            assets/demo-small.gif
+            assets/logo.png
+            assets/banner.png
+          body: |
+            ## AudioSync ${{ github.ref_name }}
+
+            ### 🎧 Local-first audiobook player with AI voices
+
+            **Highlights:**
+            - Kokoro TTS — 100% offline neural voices
+            - Gemini AI — chapter summaries, Q&A, insights
+            - PWA — install on any device, works offline
+            - Bring-your-own API keys
+
+            ### 📦 Install
+            Download `audiosync-${{ github.ref_name }}.tar.gz`, extract, and host the `dist/` folder on any static web server.
+
+            ### 📁 Asset Manifest
+            - `dist/` — production build (PWA + service worker)
+            - `assets/demo.mp4` — 30s feature demo
+            - `assets/demo-small.gif` — animated GIF preview
+            - `assets/logo.png` — project logo (512×512)
+            - `assets/banner.png` — hero banner (1440×600)
+
+            Full docs: https://github.com/NaustudentX18/AudioSync-#readme
+          draft: false
+          prerelease: ${{ contains(github.ref_name, '-alpha') || contains(github.ref_name, '-beta') }}

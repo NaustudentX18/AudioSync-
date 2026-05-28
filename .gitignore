@@ -6,3 +6,8 @@ coverage/
 *.log
 .env*
 !.env.example
+.cache/
+.temp/
+*.webm
+*.orig
+server-audiosync.cjs
