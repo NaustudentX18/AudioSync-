@@ -133,7 +133,8 @@ export default function ImportContentForm({ onAddBook }: ImportContentFormProps)
       triggerSuccess("Beautiful AI script written for you. Edit it below or click save!");
     } catch (err) {
       console.error(err);
-      setErrorMsg(err instanceof Error && err.message ? err.message : "Synthesizer failed creating draft.");
+      const errorMessage = err instanceof Error ? err.message : "Synthesizer failed creating draft.";
+      setErrorMsg(errorMessage);
       setIsAiGenerating(false);
     }
   };
@@ -232,7 +233,8 @@ export default function ImportContentForm({ onAddBook }: ImportContentFormProps)
       triggerSuccess("Vision OCR successfully parsed your document page and saved it!");
     } catch (err) {
       console.error(err);
-      setErrorMsg(err instanceof Error && err.message ? err.message : "Vision scanner processing faulted.");
+      const errorMessage = err instanceof Error ? err.message : "Vision scanner processing faulted.";
+      setErrorMsg(errorMessage);
       setIsLoading(false);
     }
   };
@@ -277,7 +279,8 @@ export default function ImportContentForm({ onAddBook }: ImportContentFormProps)
       triggerSuccess(`Successfully scraped and parsed article structure!`);
     } catch (err) {
       console.error(err);
-      setErrorMsg(err instanceof Error && err.message ? err.message : "Scraper engine encountered a socket error.");
+      const errorMessage = err instanceof Error ? err.message : "Scraper engine encountered a socket error.";
+      setErrorMsg(errorMessage);
       setIsLoading(false);
     }
   };
