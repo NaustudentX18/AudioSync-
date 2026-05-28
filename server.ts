@@ -3,15 +3,18 @@ import path from "path";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 
 dotenv.config();
+const execFileAsync = promisify(execFile);
 
 async function startServer() {
   const app = express();
   // Allow large payloads for image uploads (page OCR)
   app.use(express.json({ limit: "25mb" }));
 
-  const PORT = 3000;
+  const PORT = 3002;
 
   // Lazy initialize GoogleGenAI if the key is available
   const getGeminiAI = () => {
@@ -168,6 +171,181 @@ Structure the text as:
     } catch (error: any) {
       console.error("Generate-script error:", error);
       res.status(500).json({ error: error.message || "Failed to generate AI audio script." });
+    }
+  });
+
+  
+
+  // Audiobookshelf sync connector baseline
+  app.post("/api/sync/audiobookshelf", async (req, res) => {
+    try {
+      const { payload } = req.body || {};
+      if (!payload) return res.status(400).json({ error: "payload is required" });
+
+      const baseUrl = process.env.AUDIOBOOKSHELF_URL;
+      const token = process.env.AUDIOBOOKSHELF_TOKEN;
+      if (!baseUrl || !token) {
+        return res.status(503).json({
+          error: "Audiobookshelf connector not configured",
+          hint: "Set AUDIOBOOKSHELF_URL and AUDIOBOOKSHELF_TOKEN on server",
+        });
+      }
+
+      const response = await fetch(`${baseUrl.replace(/\/$/, "")}/api/libraries`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) {
+        return res.status(502).json({ error: `Audiobookshelf probe failed: ${response.status}` });
+      }
+
+      // Baseline connector acknowledgement; deeper import mapping to be extended later
+      return res.json({ ok: true, message: "Connector reachable", bytes: JSON.stringify(payload).length });
+    } catch (error: any) {
+      return res.status(500).json({ error: error.message || "Audiobookshelf sync failed" });
+    }
+  });
+
+
+
+  // Backend conversion/extraction endpoints for MOBI/FB2/PDF
+  app.post("/api/extract/pdf", async (req, res) => {
+    try {
+      const { filePath } = req.body || {};
+      if (!filePath) return res.status(400).json({ error: "filePath is required" });
+
+      const { stdout } = await execFileAsync("pdftotext", [filePath, "-"]);
+      return res.json({ text: stdout || "" });
+    } catch (error: any) {
+      return res.status(500).json({
+        error: "PDF extraction failed",
+        hint: "Install pdftotext (poppler-utils) or provide plain text fallback",
+        detail: error.message,
+      });
+    }
+  });
+
+  app.post("/api/convert/ebook", async (req, res) => {
+    try {
+      const { inputPath, outputPath } = req.body || {};
+      if (!inputPath || !outputPath) {
+        return res.status(400).json({ error: "inputPath and outputPath are required" });
+      }
+
+      await execFileAsync("ebook-convert", [inputPath, outputPath]);
+      return res.json({ ok: true, outputPath });
+    } catch (error: any) {
+      return res.status(500).json({
+        error: "Ebook conversion failed",
+        hint: "Install Calibre ebook-convert for MOBI/FB2 pipelines",
+        detail: error.message,
+      });
+    }
+  });
+
+
+
+  app.get("/api/capabilities", async (_req, res) => {
+    const checks = [
+      { name: 'ebook-convert', cmd: 'ebook-convert', args: ['--version'] },
+      { name: 'pdftotext', cmd: 'pdftotext', args: ['-v'] },
+    ];
+
+    const results: Record<string, boolean> = {};
+    for (const check of checks) {
+      try {
+        await execFileAsync(check.cmd, check.args);
+        results[check.name] = true;
+      } catch {
+        results[check.name] = false;
+      }
+    }
+
+    res.json({ tools: results });
+  });
+
+
+
+  app.post("/api/sync/audiobookshelf/map", async (req, res) => {
+    try {
+      const { payload } = req.body || {};
+      if (!payload?.books || !Array.isArray(payload.books)) {
+        return res.status(400).json({ error: 'payload.books is required' });
+      }
+
+      const mapped = payload.books.map((b: any) => ({
+        title: b.title,
+        author: b.author || 'Unknown',
+        description: (b.content || '').slice(0, 1000),
+        tags: b.tags || [],
+      }));
+
+      return res.json({ ok: true, count: mapped.length, mappedPreview: mapped.slice(0, 5) });
+    } catch (error: any) {
+      return res.status(500).json({ error: error.message || 'Mapping failed' });
+    }
+  });
+
+
+
+  app.post("/api/sync/audiobookshelf/push", async (req, res) => {
+    try {
+      const { payload, dryRun = true } = req.body || {};
+      if (!payload?.books || !Array.isArray(payload.books)) {
+        return res.status(400).json({ error: 'payload.books is required' });
+      }
+
+      const baseUrl = process.env.AUDIOBOOKSHELF_URL;
+      const token = process.env.AUDIOBOOKSHELF_TOKEN;
+      if (!baseUrl || !token) {
+        return res.status(503).json({ error: 'Audiobookshelf connector not configured' });
+      }
+
+      const mapped = payload.books.map((b: any) => ({
+        title: b.title,
+        author: b.author || 'Unknown',
+        description: (b.content || '').slice(0, 1000),
+        tags: b.tags || [],
+      }));
+
+      if (dryRun) {
+        return res.json({ ok: true, dryRun: true, count: mapped.length, mappedPreview: mapped.slice(0, 3) });
+      }
+
+      const libraryRes = await fetch(`${baseUrl.replace(/\/$/, '')}/api/libraries`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!libraryRes.ok) {
+        return res.status(502).json({ error: `Audiobookshelf libraries fetch failed: ${libraryRes.status}` });
+      }
+      const librariesData = await libraryRes.json();
+      const firstLibrary = librariesData?.libraries?.[0] || librariesData?.[0];
+      const libraryId = firstLibrary?.id;
+      if (!libraryId) return res.status(502).json({ error: 'No target library found' });
+
+      // Minimal write path: push metadata as a sync event note to custom endpoint if available.
+      // If endpoint not available, return mapped payload so caller can proceed with manual import.
+      const pushEndpoint = `${baseUrl.replace(/\/$/, '')}/api/sync`; // may not exist on all versions
+      const pushRes = await fetch(pushEndpoint, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ libraryId, items: mapped }),
+      }).catch(() => null as any);
+
+      if (!pushRes || !pushRes.ok) {
+        return res.status(200).json({
+          ok: true,
+          pushed: false,
+          reason: 'Direct push endpoint unavailable; returning mapped payload for manual import',
+          libraryId,
+          count: mapped.length,
+          mapped,
+        });
+      }
+
+      return res.json({ ok: true, pushed: true, libraryId, count: mapped.length });
+    } catch (error: any) {
+      return res.status(500).json({ error: error.message || 'Audiobookshelf push failed' });
     }
   });
 
